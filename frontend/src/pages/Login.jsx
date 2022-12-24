@@ -1,8 +1,25 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { login, reset } from '../features/auth/authSlice'
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch()
+
+  const onSubmit = () => {
+
+    if (!email || !password) {
+      console.log('Please fill the required fields.')
+    } else {
+      const userData = {
+        email,
+        password
+      }
+      dispatch(login(userData))
+    }
+  }
   
 
   return (
@@ -41,7 +58,8 @@ const Login = () => {
         />
       </div>
     
-      <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+      <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        type="button" onClick={() => onSubmit()}>
         Sign In
       </button>
     </div>

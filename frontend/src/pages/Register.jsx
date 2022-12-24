@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { register, reset } from '../features/auth/authSlice'
+
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -6,6 +9,24 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+
+  const dispatch = useDispatch()
+
+  const onSubmit = () => {
+    
+    if (!username || !email || !password) {
+      console.log('Please fill the required fields.')
+    } else {
+      const userData = {
+        email,
+        username,
+        firstName,
+        lastName,
+        password
+      }
+      dispatch(register(userData))
+    }
+  }
 
   return (
     <div className="md:w-1/2 sm:w-3/4 mx-auto">
@@ -90,7 +111,8 @@ const Register = () => {
           onChange={(e) => setLastName(e.target.value)}
         />
       </div>
-      <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+      <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" 
+          type="button" onClick={() => onSubmit()}>
         Sign Up
       </button>
     </div>
