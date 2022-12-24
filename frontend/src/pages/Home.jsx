@@ -81,7 +81,6 @@ const Home = () => {
                   )}
                 </Droppable>
               );
-              
             })}
           </div>
         </DragDropContext>

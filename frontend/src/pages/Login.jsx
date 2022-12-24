@@ -23,7 +23,7 @@ const Login = () => {
   
 
   return (
-    <div className="md:w-1/2 sm:w-3/4 mx-auto">
+    <div className="md:w-1/2 sm:w-3/4 mx-auto my-3">
       <p className="text-center text-2xl my-3 text-red-700">LOGIN</p>
       <div className="mb-4">
         <label
