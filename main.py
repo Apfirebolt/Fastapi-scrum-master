@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from backend.auth import router as auth_router
+from backend.tasks import router as task_router
 
 app = FastAPI(title="Fast API Blog",
     docs_url="/scrum-master-docs",
@@ -26,6 +27,7 @@ async def root():
 
 
 app.include_router(auth_router.router)
+app.include_router(task_router.router)
 
 
 if __name__ == "__main__":

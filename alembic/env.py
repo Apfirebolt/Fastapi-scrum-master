@@ -7,6 +7,7 @@ from alembic import context
 from backend.db import Base
 
 from backend.auth.models import User
+from backend.tasks.models import Task
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
