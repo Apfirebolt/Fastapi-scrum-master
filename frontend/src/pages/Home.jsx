@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useSelector, useDispatch } from "react-redux";
+import { getTasks } from "../features/tasks/taskSlice";
 import initialData from "../data/items";
 
 const Home = () => {
@@ -7,6 +9,17 @@ const Home = () => {
   
   const [stateData, updateStateData] = useState(initialData);
   const [counter, setCounter] = useState(9);
+
+  const { tasks, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.taskData
+  )
+
+  console.log(tasks, isLoading, isError, isSuccess, message)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTasks())
+  }, [])
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;

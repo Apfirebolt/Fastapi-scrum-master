@@ -30,8 +30,6 @@ const getTasks = async (token) => {
 const taskService = {
   createTask,
   getTasks,
-  getTask,
-  closeTask,
 }
 
 export default taskService

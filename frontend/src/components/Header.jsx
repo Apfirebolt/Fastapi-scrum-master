@@ -35,6 +35,12 @@ const Header = () => {
                 >
                   Add Task
                 </Link>
+                <Link
+                  to="/"
+                  className="text-sm font-medium text-white hover:text-gray-100"
+                >
+                  Home
+                </Link>
               </div>
             ) : (
               <>
