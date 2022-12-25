@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../features/tasks/taskSlice";
 
@@ -19,7 +20,6 @@ const Kanban = () => {
   useEffect(() => {
     dispatch(getTasks());
   }, []);
-
 
 
   function handleOnDragEnd(result) {
@@ -68,14 +68,19 @@ const Kanban = () => {
                         index={index}
                       >
                         {(provided) => (
-                          <p
+                          <div
                             className="drop-list-item list-none text-red-400"
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            {item.title}
-                          </p>
+                            <p>
+                              {item.title}
+                            </p>
+                            <Link to={`/task/${item.id}`} className='btn btn-reverse btn-sm'>
+                              View
+                            </Link>
+                          </div>
                         )}
                       </Draggable>
                     );

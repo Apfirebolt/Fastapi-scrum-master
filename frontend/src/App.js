@@ -4,6 +4,7 @@ import LoginScreen from "./pages/Login";
 import RegisterScreen from "./pages/Register";
 import AddTaskScreen from "./pages/AddTask";
 import KanbanScreen from "./pages/Kanban";
+import TaskDetailScreen from "./pages/TaskDetail";
 import PrivateRoute from "./components/PrivateRoute";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -21,6 +22,9 @@ const App = () => {
         </Route>
         <Route path="/kanban" element={<PrivateRoute />}>
           <Route path="/kanban" element={<KanbanScreen />} />
+        </Route>
+        <Route path='/task/:taskId' element={<PrivateRoute />}>
+          <Route path='/task/:taskId' element={<TaskDetailScreen />} />
         </Route>
       </Routes>
       <Footer />
