@@ -36,6 +36,12 @@ const Header = () => {
                   Add Task
                 </Link>
                 <Link
+                  to="/kanban"
+                  className="text-sm font-medium text-white hover:text-gray-100"
+                >
+                  Kanban
+                </Link>
+                <Link
                   to="/"
                   className="text-sm font-medium text-white hover:text-gray-100"
                 >

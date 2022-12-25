@@ -3,6 +3,7 @@ import HomeScreen from "./pages/Home";
 import LoginScreen from "./pages/Login";
 import RegisterScreen from "./pages/Register";
 import AddTaskScreen from "./pages/AddTask";
+import KanbanScreen from "./pages/Kanban";
 import PrivateRoute from "./components/PrivateRoute";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -17,6 +18,9 @@ const App = () => {
         <Route path="/register" element={<RegisterScreen />} exact />
         <Route path="/task" element={<PrivateRoute />}>
           <Route path="/task" element={<AddTaskScreen />} />
+        </Route>
+        <Route path="/kanban" element={<PrivateRoute />}>
+          <Route path="/kanban" element={<KanbanScreen />} />
         </Route>
       </Routes>
       <Footer />
