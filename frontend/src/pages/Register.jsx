@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from "react-router-dom";
-import { register, reset } from '../features/auth/authSlice'
-
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form';
+import { register as registerFunc, reset } from '../features/auth/authSlice'
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -30,25 +30,10 @@ const Register = () => {
 
     dispatch(reset())
   }, [isError, isSuccess, user, message, navigate, dispatch])
-
-  const onSubmit = () => {
-    
-    if (!username || !email || !password) {
-      console.log('Please fill the required fields.')
-    } else {
-      const userData = {
-        email,
-        username,
-        firstName,
-        lastName,
-        password
-      }
-      dispatch(register(userData))
-    }
-  }
+  
 
   return (
-    <div className="md:w-1/2 sm:w-3/4 mx-auto my-3">
+    <form onSubmit={handleSubmit((data) => dispatch(registerFunc(data)))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
       <p className="text-center text-2xl my-3 text-red-700">REGISTER</p>
       <div className="mb-4">
         <label
@@ -62,9 +47,9 @@ const Register = () => {
           id="email"
           type="text"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          {...register('email', { required: true })}
         />
+        {errors.email && <p className="text-red-500">Email is required.</p>}
       </div>
       <div className="mb-4">
         <label
@@ -78,10 +63,11 @@ const Register = () => {
           id="username"
           type="text"
           placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          {...register('username', { required: true })}
         />
+        {errors.username && <p className="text-red-500">Username is required.</p>}
       </div>
+      
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
@@ -94,9 +80,9 @@ const Register = () => {
           id="password"
           type="password"
           placeholder="Enter Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          {...register('password', { required: true })}
         />
+        {errors.password && <p className="text-red-500">Password is required.</p>}
       </div>
       <div className="mb-4">
         <label
@@ -110,9 +96,9 @@ const Register = () => {
           id="firstName"
           type="text"
           placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          {...register('firstName', { required: true })}
         />
+        {errors.firstName && <p className="text-red-500">First Name is required.</p>}
       </div>
       <div className="mb-4">
         <label
@@ -126,15 +112,13 @@ const Register = () => {
           id="lastName"
           type="text"
           placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          {...register('lastName', { required: true })}
         />
+        {errors.lastName && <p className="text-red-500">Last Name is required.</p>}
       </div>
-      <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" 
-          type="button" onClick={() => onSubmit()}>
-        Sign Up
-      </button>
-    </div>
+      <input className="shadow cursor-pointer bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        type="submit" value="Sign Up" />
+    </form>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useForm } from 'react-hook-form';
 import { createTask } from "../features/tasks/taskSlice";
 
 const AddTask = () => {
@@ -10,21 +11,14 @@ const AddTask = () => {
   const dispatch = useDispatch();
   const statusChoices = ["To Do", "In Progress", "In Review", "Done"];
 
-  const onSubmit = () => {
-    if (!title || !description || !status) {
-      console.log("Please fill the required fields.");
-    } else {
-      const taskData = {
-        title,
-        description,
-        status,
-      };
-      dispatch(createTask(taskData));
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   return (
-    <div className="md:w-1/2 sm:w-3/4 mx-auto my-3">
+    <form onSubmit={handleSubmit((data) => dispatch(createTask(data)))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
       <p className="text-center text-2xl my-3 text-red-700">ADD TASK</p>
       <div className="mb-4">
         <label
@@ -38,9 +32,9 @@ const AddTask = () => {
           id="title"
           type="text"
           placeholder="Task Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          {...register('title', { required: true })}
         />
+        {errors.title && <p className="text-red-500">Title is required.</p>}
       </div>
       <div className="mb-4">
         <label
@@ -54,10 +48,10 @@ const AddTask = () => {
           id="description"
           type="text"
           placeholder="Task Description"
-          value={description}
           rows="10"
-          onChange={(e) => setDescription(e.target.value)}
+          {...register('description', { required: true })}
         ></textarea>
+        {errors.description && <p className="text-red-500">Description is required.</p>}
       </div>
       <div className="mb-4">
         <label
@@ -67,8 +61,7 @@ const AddTask = () => {
           Status
         </label>
         <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}  
+          {...register('status', { required: true })}  
           className="form-select appearance-none
                 block
                 w-full
@@ -90,16 +83,12 @@ const AddTask = () => {
               <option key={index} value={item}>{item}</option>
           ))}
         </select>
+        {errors.status && <p className="text-red-500">Status is required.</p>}
       </div>
 
-      <button
-        className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-        type="button"
-        onClick={() => onSubmit()}
-      >
-        Add Task
-      </button>
-    </div>
+      <input className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        type="submit" value="Add Task" />
+    </form>
   );
 };
 
