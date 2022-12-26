@@ -2,28 +2,56 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getTasks } from "../features/tasks/taskSlice";
+import { getTasks, updateTask } from "../features/tasks/taskSlice";
 
 const Kanban = () => {
   const [stateData, updateStateData] = useState({});
-  const [counter, setCounter] = useState(9);
-
-  const statusColumns = ['To Do', 'In Progress', 'In Review', 'Completed']
 
   const { tasks, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.taskData
   );
 
-  console.log(tasks, isLoading, isError, isSuccess, message);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTasks());
   }, []);
 
+  useEffect(() => {
+    if (tasks.length) {
+      let columnData = {
+        "To Do": [],
+        "In Progress": [],
+        "In Review": [],
+        Done: [],
+      };
+      tasks.forEach((item) => {
+        columnData[item["status"]].push(item);
+      });
+      updateStateData(columnData);
+    }
+  }, [tasks]);
 
   function handleOnDragEnd(result) {
-    console.log(result)
+    if (result.destination.droppableId) {
+      console.log(parseInt(result.draggableId), result.destination.droppableId)
+      let payload = {
+        id: parseInt(result.draggableId),
+        status: result.destination.droppableId
+      }
+      dispatch(updateTask(payload))
+
+      let newStateData = {...stateData};
+      let destinationArray = Array.from(stateData[result.destination.droppableId])
+      let sourceArray = Array.from(stateData[result.source.droppableId])
+
+      const itemInserted = sourceArray[result.source.index]
+      sourceArray.splice(result.source.index, 1)
+      destinationArray.splice(result.destination.index, 0, itemInserted)
+      newStateData[result.source.droppableId] = sourceArray
+      newStateData[result.destination.droppableId] = destinationArray
+      updateStateData(newStateData)
+      }
   }
 
   return (
@@ -31,9 +59,9 @@ const Kanban = () => {
       <header className="App-header">
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <div className="dropped-content">
-            {statusColumns.map((name, index) => {
+            {Object.keys(stateData).map((name, index) => {
               return (
-                <Droppable key={name} droppableId={name} index={index}>
+                <Droppable key={name} droppableId={name}>
                   {(provided) => (
                     <div
                       className="dropped-container"
@@ -42,53 +70,38 @@ const Kanban = () => {
                       {...provided.dragHandleProps}
                     >
                       <h3>{name}</h3>
+                      {stateData[name].map((item, index) => {
+                        return (
+                          <Draggable
+                            key={item.id}
+                            draggableId={item.id.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                className="drop-list-item list-none text-red-400"
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <p>{item.title}</p>
+                                <Link
+                                  to={`/task/${item.id}`}
+                                  className="btn btn-reverse btn-sm"
+                                >
+                                  View
+                                </Link>
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
                       {provided.placeholder}
                     </div>
                   )}
                 </Droppable>
               );
             })}
-          </div>
-          <div className="dropped-content">
-            <Droppable key="task-list" droppableId="task-list">
-              {(provided) => (
-                <div
-                  className="dropped-container"
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                >
-                  <h3>Task</h3>
-
-                  {tasks.map((item, index) => {
-                    return (
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.title}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            className="drop-list-item list-none text-red-400"
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <p>
-                              {item.title}
-                            </p>
-                            <Link to={`/task/${item.id}`} className='btn btn-reverse btn-sm'>
-                              View
-                            </Link>
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
           </div>
         </DragDropContext>
       </header>
