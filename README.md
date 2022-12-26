@@ -14,6 +14,18 @@ It is a simple Kanban board application where you have four status 'To Do', 'In 
 
 It has supoort for multi-user authentication.
 
+## Screenshots
+
+The style might be a subject to change in the future for this project. But, as of now this is how few pages look like
+
+Add Task form.
+
+![alt text](./screenshots/add_task.PNG)
+
+Kanban board displaying all the tasks which is the core feature of this application.
+
+![alt text](./screenshots/kanban.PNG)
+
 ## Deployment
 
 In future I plan to write YAML script to deploy this on local using Docker containers.
