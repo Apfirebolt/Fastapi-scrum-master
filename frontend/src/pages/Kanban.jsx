@@ -69,7 +69,7 @@ const Kanban = () => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <h3>{name}</h3>
+                      <h3 className="text-2xl text-center my-2 bg-red-600 text-white p-2 rounded">{name}</h3>
                       {stateData[name].map((item, index) => {
                         return (
                           <Draggable
@@ -79,19 +79,26 @@ const Kanban = () => {
                           >
                             {(provided) => (
                               <div
-                                className="drop-list-item list-none text-red-400"
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <p>{item.title}</p>
-                                <Link
-                                  to={`/task/${item.id}`}
-                                  className="btn btn-reverse btn-sm"
+                                className="max-w-sm rounded overflow-hidden shadow-lg my-3 bg-white p-3"
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
                                 >
-                                  View
-                                </Link>
-                              </div>
+                                  <div className="px-6 py-4">
+                                    <p className="font-bold text-xl mb-2">{item.title}</p>
+                                    <p className="text-gray-700 text-base">
+                                      {item.description}
+                                    </p>
+                                  </div>
+                                  <div className="px-6 pt-4 pb-2"> 
+                                    <Link
+                                      to={`/task/${item.id}`}
+                                      className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                                    >
+                                      View
+                                    </Link>
+                                  </div>
+                              </div>      
                             )}
                           </Draggable>
                         );
