@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -21,14 +23,27 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root():
-    return {"message": "Scrum Master API in FastAPI"}
-
-
 app.include_router(auth_router.router)
 app.include_router(task_router.router)
+
+app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
+
+templates = Jinja2Templates(directory="frontend/build")
+
+
+@app.get("/{full_path:path}")
+async def serve_react_app(request: Request, full_path: str):
+    """Serve the react app
+    `full_path` variable is necessary to serve each possible endpoint with
+    `index.html` file in order to be compatible with `react-router-dom
+    """
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+
+
+    
