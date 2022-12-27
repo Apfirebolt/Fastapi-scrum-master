@@ -7,6 +7,7 @@ import uvicorn
 
 from backend.auth import router as auth_router
 from backend.tasks import router as task_router
+from backend.admin import router as admin_router
 
 app = FastAPI(title="Fast API Blog",
     docs_url="/scrum-master-docs",
@@ -25,19 +26,20 @@ app.add_middleware(
 
 app.include_router(auth_router.router)
 app.include_router(task_router.router)
+app.include_router(admin_router.router)
 
 app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
 templates = Jinja2Templates(directory="frontend/build")
 
 
-@app.get("/{full_path:path}")
-async def serve_react_app(request: Request, full_path: str):
-    """Serve the react app
-    `full_path` variable is necessary to serve each possible endpoint with
-    `index.html` file in order to be compatible with `react-router-dom
-    """
-    return templates.TemplateResponse("index.html", {"request": request})
+# @app.get("/{full_path:path}")
+# async def serve_react_app(request: Request, full_path: str):
+#     """Serve the react app
+#     `full_path` variable is necessary to serve each possible endpoint with
+#     `index.html` file in order to be compatible with `react-router-dom
+#     """
+#     return templates.TemplateResponse("index.html", {"request": request})
 
 
 if __name__ == "__main__":
