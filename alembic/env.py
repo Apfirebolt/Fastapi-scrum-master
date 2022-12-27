@@ -30,10 +30,11 @@ target_metadata = Base.metadata
 
 def get_url():
     db_user = 'postgres'
-    db_password = 'pass12345'
-    db_host ='127.0.0.1'
-    db_name = 'fast-scrum'
+    db_password = 'rayquaza1000'
+    db_host ='20.127.196.100'
+    db_name = 'fast-kanban'
     return f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
+
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.

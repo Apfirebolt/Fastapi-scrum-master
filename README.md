@@ -14,6 +14,10 @@ It is a simple Kanban board application where you have four status 'To Do', 'In 
 
 It has supoort for multi-user authentication.
 
+## Updates
+
+27/12/22 : Added Admin panel with support of being able to add users and tasks, modify any user or task for admin role user type.
+
 ## Screenshots
 
 The style might be a subject to change in the future for this project. But, as of now this is how few pages look like
