@@ -38,6 +38,42 @@ async def update_user_by_id(request, user_id, database):
     return user
 
 
+async def all_tasks(database) -> List[Task]:
+    tasks = database.query(Task).all()
+    return tasks
+
+
+async def get_task_by_id(task_id, database):
+    task = database.query(User).filter_by(id=task_id).first()
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task Not Found !"
+        )
+    return task
+
+
+async def delete_task_by_id(task_id, database):
+    database.query(Task).filter(
+        Task.id == task_id).delete()
+    database.commit()
+
+
+async def update_task_by_id(request, task_id, database):
+    task = database.query(Task).filter_by(id=task_id).first()
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task Not Found !"
+        )
+    task.title = request.title if request.title else task.title
+    task.description = request.description if request.description else task.description
+    task.status = request.status if request.status else task.status
+    database.commit()
+    database.refresh(task)
+    return task
+
+
 
 
 

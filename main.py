@@ -33,13 +33,13 @@ app.mount("/static", StaticFiles(directory="frontend/build/static"), name="stati
 templates = Jinja2Templates(directory="frontend/build")
 
 
-# @app.get("/{full_path:path}")
-# async def serve_react_app(request: Request, full_path: str):
-#     """Serve the react app
-#     `full_path` variable is necessary to serve each possible endpoint with
-#     `index.html` file in order to be compatible with `react-router-dom
-#     """
-#     return templates.TemplateResponse("index.html", {"request": request})
+@app.get("/{full_path:path}")
+async def serve_react_app(request: Request, full_path: str):
+    """Serve the react app
+    `full_path` variable is necessary to serve each possible endpoint with
+    `index.html` file in order to be compatible with `react-router-dom
+    """
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 if __name__ == "__main__":

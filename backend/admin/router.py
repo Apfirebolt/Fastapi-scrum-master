@@ -52,6 +52,45 @@ async def update_user_by_id(request: schema.UserUpdate, user_id: int, database: 
     return await adminServices.update_user_by_id(request, user_id, database)
 
 
+@router.get('/tasks', status_code=status.HTTP_200_OK, response_model=List[taskSchema.TaskBase])
+async def get_user_by_id(database: Session = Depends(db.get_db),
+                                current_user: User = Depends(get_current_user)):                            
+    user = database.query(User).filter(User.email == current_user.email).first()
+    if user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")
+    return await adminServices.all_tasks(database)
+
+
+@router.get('/tasks/{task_id}', status_code=status.HTTP_200_OK, response_model=taskSchema.TaskBase)
+async def get_task_by_id(task_id: int, database: Session = Depends(db.get_db),
+                                current_user: User = Depends(get_current_user)):                            
+    user = database.query(User).filter(User.email == current_user.email).first()
+    print('Database ', database)
+    if user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")
+    return await taskServices.get_task_by_id(task_id, database)
+
+
+@router.delete('/tasks/{task_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+async def delete_task_by_id(task_id: int,
+                                database: Session = Depends(db.get_db),
+                                current_user: User = Depends(get_current_user)):
+    user = database.query(User).filter(User.email == current_user.email).first()
+    if user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")
+    return await adminServices.delete_task_by_id(task_id, database)
+
+
+@router.patch('/tasks/{task_id}', status_code=status.HTTP_200_OK, response_model=taskSchema.TaskBase)
+async def update_user_by_id(request: taskSchema.TaskUpdate, task_id: int, database: Session = Depends(db.get_db),
+                                current_user: User = Depends(get_current_user)):
+
+    user = database.query(User).filter(User.email == current_user.email).first()
+    if user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")                            
+    return await adminServices.update_task_by_id(request, task_id, database)
+
+
 
 
 

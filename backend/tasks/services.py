@@ -18,8 +18,8 @@ async def get_task_listing(database) -> List[models.Task]:
     return tasks
 
 
-async def get_task_by_id(task_id, user_id, database):
-    task = database.query(models.Task).filter_by(id=task_id, owner_id=user_id).first()
+async def get_task_by_id(task_id, database):
+    task = database.query(models.Task).filter_by(id=task_id).first()
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -28,14 +28,14 @@ async def get_task_by_id(task_id, user_id, database):
     return task
 
 
-async def delete_task_by_id(task_id, user_id, database):
+async def delete_task_by_id(task_id, database):
     database.query(models.Task).filter(
-        models.Task.id == task_id and models.Task.owner_id == user_id).delete()
+        models.Task.id == task_id).delete()
     database.commit()
 
 
-async def update_task_by_id(request, task_id, user_id, database):
-    task = database.query(models.Task).filter_by(id=task_id, owner_id=user_id).first()
+async def update_task_by_id(request, task_id, database):
+    task = database.query(models.Task).filter_by(id=task_id).first()
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
