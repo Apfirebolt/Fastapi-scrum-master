@@ -32,6 +32,12 @@ app.mount("/static", StaticFiles(directory="frontend/build/static"), name="stati
 
 templates = Jinja2Templates(directory="frontend/build")
 
+@app.get('/')
+def main_response():
+    return {
+        'data': 'Amit'
+    }
+
 
 # @app.get("/{full_path:path}")
 # async def serve_react_app(request: Request, full_path: str):

@@ -48,4 +48,4 @@ async def delete_task_by_id(task_id: int,
 @router.patch('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
 async def update_task_by_id(request: schema.TaskUpdate, task_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
-    return await services.update_task_by_id(request, task_id, current_user.id, database)
+    return await services.update_task_by_id(request, task_id, database)

@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from . import config
+import config
 
 DATABASE_USERNAME = config.DATABASE_USERNAME
 DATABASE_PASSWORD = config.DATABASE_PASSWORD

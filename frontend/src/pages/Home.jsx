@@ -1,4 +1,17 @@
+import React, { useState } from "react";
+import { Editor, stateToHTML, EditorState, convertFromRaw, convertToRaw } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+
 const Home = () => {
+  
+  const [editorState, setEditorState] = useState({})
+
+  const updateTextDescription = async (state) => {
+    await setEditorState(state);
+    
+    console.log('Data ', editorState.getCurrentContent())
+  };
   return (
     <div className="bg-gray-50">
       <div className="mx-auto max-w-screen-xl px-4 py-16 lg:flex lg:items-center">
@@ -13,6 +26,14 @@ const Home = () => {
           <p className="mt-4 sm:text-xl sm:leading-relaxed">
             A simple Jira clone - create tasks and arrange them through drag and drop
           </p>
+
+          <Editor
+            editorState={editorState}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
+            onEditorStateChange={updateTextDescription}
+          />;
         </div>
       </div>
     </div>
