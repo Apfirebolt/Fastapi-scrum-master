@@ -45,3 +45,40 @@ def test_create_user():
     assert data["username"] == "deadpool"
     assert "id" in data
     user_id = data["id"]
+
+
+# Login with existing user
+def test_auth_user():
+    response = client.post(
+        "auth/login/",
+        json={
+            "email": "deadpool@example.com",  
+            "password": "chimichangas4life", 
+        },
+    )
+    data = response.json()
+    assert 'access_token' in data
+    assert response.status_code == 200
+
+
+def test_get_tasks():
+    response = client.post(
+        "auth/login/",
+        json={
+            "email": "deadpool@example.com",  
+            "password": "chimichangas4life", 
+        },
+    )
+    data = response.json()
+    access_token = data['access_token']
+    assert 'access_token' in data
+    assert response.status_code == 200
+
+    taskResponse = client.get(
+        "task/",
+        headers={
+            "Authorization": "Bearer " + access_token
+        }
+    )
+    data = taskResponse.json()
+    assert taskResponse.status_code == 200
