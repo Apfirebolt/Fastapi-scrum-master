@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { useParams, useNavigate } from "react-router-dom";
-import { updateTask, getTask, deleteTask } from "../features/tasks/taskSlice";
+import { updateTask, getTask, deleteTask, resetVariables } from "../features/tasks/taskSlice";
 
 const AddTask = () => {
  
@@ -10,6 +11,17 @@ const AddTask = () => {
   const params = useParams();
   const navigate = useNavigate();
   const statusChoices = ["To Do", "In Progress", "In Review", "Done"];
+  const [toastMessage, setToastMessage] = useState('')
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  }
 
   useEffect(() => {
     dispatch(getTask(params.taskId));
@@ -18,6 +30,18 @@ const AddTask = () => {
   const { task, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.taskData
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+
+    if (isSuccess) {
+      toast.success(toastMessage)
+      dispatch(resetVariables())
+      navigate('/kanban')
+    }
+  }, [dispatch, isError, isSuccess, navigate, message])
 
   const {
     register,
@@ -39,11 +63,12 @@ const AddTask = () => {
   },[task])
 
   const deleteTaskUtil = () => {
+    setToastMessage('Task successfully deleted!')
     dispatch(deleteTask(params.taskId))
-    navigate('/kanban')
   }
 
   const updateTaskUtil = (data) => {
+    setToastMessage('Task successfully updated!')
     data.id = task.id
     dispatch(updateTask(data))
   }

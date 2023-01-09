@@ -58,7 +58,7 @@ const Kanban = () => {
     <div className="App">
       <header className="App-header">
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <div className="dropped-content">
+          <div className="dropped-content grid grid-cols-2 md:grid-cols-4">
             {Object.keys(stateData).map((name, index) => {
               return (
                 <Droppable key={name} droppableId={name}>

@@ -17,8 +17,6 @@ code {
 }
 
 .dropped-content {
-  display: flex;
-  justify-content: center;
   background:#61dafb;
   padding: 1rem;
 }

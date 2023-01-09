@@ -116,6 +116,11 @@ export const taskSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => initialState,
+    resetVariables: (state) => {
+      state.isError = false
+      state.isLoading = false
+      state.isSuccess = false
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -136,7 +141,6 @@ export const taskSlice = createSlice({
       })
       .addCase(getTasks.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
         state.tasks = action.payload;
       })
       .addCase(getTasks.rejected, (state, action) => {
@@ -149,7 +153,6 @@ export const taskSlice = createSlice({
       })
       .addCase(getTask.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
         state.task = action.payload;
       })
       .addCase(getTask.rejected, (state, action) => {
@@ -185,5 +188,5 @@ export const taskSlice = createSlice({
   },
 });
 
-export const { reset } = taskSlice.actions;
+export const { reset, resetVariables } = taskSlice.actions;
 export default taskSlice.reducer;

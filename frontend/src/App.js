@@ -5,9 +5,11 @@ import RegisterScreen from "./pages/Register";
 import AddTaskScreen from "./pages/AddTask";
 import KanbanScreen from "./pages/Kanban";
 import TaskDetailScreen from "./pages/TaskDetail";
+import { ToastContainer } from 'react-toastify';
 import PrivateRoute from "./components/PrivateRoute";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
         </Route>
       </Routes>
       <Footer />
+      <ToastContainer />
     </Router>
   );
 };

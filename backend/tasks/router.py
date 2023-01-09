@@ -35,14 +35,14 @@ async def task_list(database: Session = Depends(db.get_db)):
 @router.get('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
 async def get_task_by_id(task_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
-    return await services.get_task_by_id(task_id, current_user.id, database)
+    return await services.get_task_by_id(task_id, database)
 
 
 @router.delete('/{task_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
 async def delete_task_by_id(task_id: int,
                                 database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):
-    return await services.delete_task_by_id(task_id, current_user.id, database)
+    return await services.delete_task_by_id(task_id, database)
 
 
 @router.patch('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
