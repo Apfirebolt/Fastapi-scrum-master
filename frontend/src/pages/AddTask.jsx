@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
-import { createTask } from "../features/tasks/taskSlice";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+import { createTask, resetVariables } from "../features/tasks/taskSlice";
 
 const AddTask = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const statusChoices = ["To Do", "In Progress", "In Review", "Done"];
+  const [toastMessage, setToastMessage] = useState('')
 
   const {
     register,
@@ -17,8 +18,29 @@ const AddTask = () => {
     formState: { errors },
   } = useForm();
 
+  const { isError, isSuccess, message } = useSelector(
+    (state) => state.taskData
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+
+    if (isSuccess) {
+      toast.success(toastMessage)
+      dispatch(resetVariables())
+      navigate('/kanban')
+    }
+  }, [dispatch, isError, isSuccess, navigate, message])
+
+  const createTaskUtil = (data) => {
+    dispatch(createTask(data))
+    setToastMessage('Task created successfully!')
+  }
+
   return (
-    <form onSubmit={handleSubmit((data) => dispatch(createTask(data)))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
+    <form onSubmit={handleSubmit((data) => createTaskUtil(data))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
       <p className="text-center text-2xl my-3 text-red-700">ADD TASK</p>
       <div className="mb-4">
         <label

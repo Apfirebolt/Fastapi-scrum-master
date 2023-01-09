@@ -33,11 +33,11 @@ const AddTask = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message)
+      toast.error(message, toastOptions)
     }
 
     if (isSuccess) {
-      toast.success(toastMessage)
+      toast.success(toastMessage, toastOptions)
       dispatch(resetVariables())
       navigate('/kanban')
     }
