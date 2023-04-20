@@ -24,6 +24,7 @@ const AddTask = () => {
   }
 
   useEffect(() => {
+    console.log('Runs use effect again..')
     dispatch(getTask(params.taskId));
   }, []);
 
@@ -62,7 +63,8 @@ const AddTask = () => {
     })
   },[task])
 
-  const deleteTaskUtil = () => {
+  const deleteTaskUtil = (e) => {
+    e.preventDefault()
     setToastMessage('Task successfully deleted!')
     dispatch(deleteTask(params.taskId))
   }
@@ -145,7 +147,7 @@ const AddTask = () => {
       <div>
         <input className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           type="submit" value="Update Task" />
-        <button onClick={() => deleteTaskUtil()} className="shadow mx-3 bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+        <button onClick={(e) => deleteTaskUtil(e)} className="shadow mx-3 bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
           Delete Task
         </button>  
       </div>

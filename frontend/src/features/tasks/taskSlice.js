@@ -179,6 +179,7 @@ export const taskSlice = createSlice({
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        getTasks()
       })
       .addCase(deleteTask.rejected, (state, action) => {
         state.isLoading = false;

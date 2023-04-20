@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { logout, reset } from "../features/auth/authSlice";
 
 const Header = () => {
@@ -8,7 +9,20 @@ const Header = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
+  const toastMessage = "Logged out successfully";
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  };
+
   const onLogout = () => {
+    toast.success(toastMessage, toastOptions);
     dispatch(logout());
     dispatch(reset());
     navigate("/");
