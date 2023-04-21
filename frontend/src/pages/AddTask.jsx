@@ -27,12 +27,12 @@ const AddTask = () => {
       toast.error(message)
     }
 
-    if (isSuccess) {
+    if (isSuccess && toastMessage) {
       toast.success(toastMessage)
       dispatch(resetVariables())
       navigate('/kanban')
     }
-  }, [dispatch, isError, isSuccess, navigate, message])
+  }, [dispatch, isError, isSuccess, message, navigate, toastMessage])
 
   const createTaskUtil = (data) => {
     dispatch(createTask(data))
