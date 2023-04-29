@@ -23,8 +23,10 @@ const AddTask = () => {
   );
 
   useEffect(() => {
+
     if (isError) {
       toast.error(message)
+      dispatch(resetVariables())
     }
 
     if (isSuccess && toastMessage) {

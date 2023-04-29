@@ -1,47 +1,71 @@
 import axios from 'axios'
-
+import { toast } from 'react-toastify'
 const API_URL = 'http://localhost:8000/task/'
 
 // Create new task
 const createTask = async (taskData, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  
+    const response = await axios.post(API_URL, taskData, config)
+  
+    return response.data
+  } catch (err) {
+    let errorMessage = 'Something went wrong'
+    if (err.response.status === 401) {
+      errorMessage = 'Unauthorized access, please login again.'
+    }
+    toast.error(errorMessage)
   }
-
-  const response = await axios.post(API_URL, taskData, config)
-
-  return response.data
 }
 
 // Get user tasks
 const getTasks = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios.get(API_URL, config)
+    return response.data
+  } catch (err) {
+    let errorMessage = 'Something went wrong'
+    if (err.response.status === 401) {
+      errorMessage = 'Unauthorized access, please login again.'
+    }
+    toast.error(errorMessage)
   }
-
-  const response = await axios.get(API_URL, config)
-  return response.data
 }
 
 // Get single Task
 const getTask = async (taskId, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  
+    const response = await axios.get(API_URL + taskId, config)
+  
+    return response.data
+  } catch (err) {
+    let errorMessage = 'Something went wrong'
+    if (err.response.status === 401) {
+      errorMessage = 'Unauthorized access, please login again.'
+    }
+    toast.error(errorMessage)
   }
-
-  const response = await axios.get(API_URL + taskId, config)
-
-  return response.data
 }
 
 // Update Task
 const updateTask = async (data, token) => {
+ try {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -52,19 +76,34 @@ const updateTask = async (data, token) => {
   const response = await axios.patch(API_URL + data.id, data, config)
 
   return response.data
+ } catch (err) {
+  let errorMessage = 'Something went wrong'
+    if (err.response.status === 401) {
+      errorMessage = 'Unauthorized access, please login again.'
+    }
+    toast.error(errorMessage)
+ }
 }
 
 // Delete single Task
 const deleteTask = async (taskId, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  
+    const response = await axios.delete(API_URL + taskId, config)
+  
+    return response.data
+  } catch (err) {
+    let errorMessage = 'Something went wrong'
+    if (err.response.status === 401) {
+      errorMessage = 'Unauthorized access, please login again.'
+    }
+    toast.error(errorMessage)
   }
-
-  const response = await axios.delete(API_URL + taskId, config)
-
-  return response.data
 }
 
 const taskService = {

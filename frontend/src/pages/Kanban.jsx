@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks, updateTask } from "../features/tasks/taskSlice";
+import Loader from '../components/Loader';
 
 const Kanban = () => {
   const [stateData, updateStateData] = useState({});
@@ -15,10 +16,10 @@ const Kanban = () => {
 
   useEffect(() => {
     dispatch(getTasks());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (tasks.length) {
+    if (tasks && tasks.length) {
       let columnData = {
         "To Do": [],
         "In Progress": [],
@@ -58,10 +59,16 @@ const Kanban = () => {
     }
   }
 
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        {tasks.length ? (
+        {tasks && tasks.length ? (
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <div className="dropped-content grid grid-cols-2 md:grid-cols-4">
               {Object.keys(stateData).map((name, index) => {

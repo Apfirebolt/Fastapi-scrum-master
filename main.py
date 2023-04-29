@@ -33,12 +33,6 @@ app.mount("/static", StaticFiles(directory="frontend/build/static"), name="stati
 
 templates = Jinja2Templates(directory="frontend/build")
 
-# @app.get('/')
-# def main_response():
-#     return {
-#         'data': 'Amit'
-#     }
-
 
 # Middleware to calculate response time of an API
 @app.middleware("http")
@@ -60,8 +54,4 @@ async def serve_react_app(request: Request, full_path: str):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
-
-
-    
+ 
