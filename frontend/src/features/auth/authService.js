@@ -1,34 +1,55 @@
-import axios from 'axios'
-
-const API_URL = 'http://localhost:8000/auth/'
+import axios from "axios";
+import { toast } from "react-toastify";
+const API_URL = "http://localhost:8000/auth/";
 
 // Register user
 const register = async (userData) => {
-  const response = await axios.post(API_URL, userData)
+  try {
+    const response = await axios.post(API_URL, userData);
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
+    if (response.data) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      toast.success('Registered successfully');
+    }
+    return response.data;
+  } catch (err) {
+    let errorMessage = "Something went wrong";
+    if (err.response.status === 401) {
+      errorMessage = "Unauthorized access, please login again.";
+    }
+    toast.error(errorMessage);
   }
-  return response.data
-}
+};
 
 // Login user
 const login = async (userData) => {
-  const response = await axios.post(API_URL + 'login', userData)
+  try {
+    const response = await axios.post(API_URL + "login", userData);
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
+    if (response.data) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      toast.success('Logged in successfully')
+    }
+    return response.data;
+  } catch (err) {
+    let errorMessage = "Something went wrong";
+    if (err.response.status === 400) {
+      errorMessage = err.response.data.detail
+    }
+    if (err.response.status === 404) {
+      errorMessage = err.response.data.detail
+    }
+    toast.error(errorMessage);
   }
-  return response.data
-}
+};
 
 // Logout user
-const logout = () => localStorage.removeItem('user')
+const logout = () => localStorage.removeItem("user");
 
 const authService = {
   register,
   logout,
   login,
-}
+};
 
-export default authService
+export default authService;
