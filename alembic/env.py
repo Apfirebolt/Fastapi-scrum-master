@@ -28,11 +28,12 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+
 def get_url():
     db_user = 'postgres'
-    db_password = 'rayquaza1000'
-    db_host ='20.127.196.100'
-    db_name = 'fast-kanban'
+    db_password = 'pass123'
+    db_host ='db'
+    db_name = 'fastapi-react'
     return f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
 
 

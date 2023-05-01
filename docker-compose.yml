@@ -4,21 +4,21 @@ services:
 
   web:
     build: .
-    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000
     volumes:
       - ./:/usr/src/app
     ports:
       - 8000:8000
     environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/scrum-master
+      - DATABASE_URL=postgresql+asyncpg://pass123:postgres@db:5432/fastapi-react
     depends_on:
       - db
-
+  
   db:
     image: postgres:13.4
     expose:
       - 5432
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=scrum-master
+      - POSTGRES_PASSWORD=pass123
+      - POSTGRES_DB=fastapi-react
