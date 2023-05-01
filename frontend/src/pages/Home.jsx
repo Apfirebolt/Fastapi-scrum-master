@@ -1,9 +1,23 @@
-import React from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserProfile } from "../features/auth/authSlice";
+import Loader from "../components/Loader";
 
 const Home = () => {
-  
+  const { profile, user, isLoading } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserProfile());
+    }
+  }, [dispatch, user]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div className="bg-gray-50">
       <div className="mx-auto max-w-screen-xl px-4 py-16 lg:flex lg:items-center">
@@ -15,8 +29,18 @@ const Home = () => {
             </strong>
           </h1>
 
+          {profile && (
+            <h1 className="text-xl my-4 font-extrabold sm:text-2xl">
+              Welcome to Kanban Board,
+              <strong className="font-extrabold text-blue-700 sm:block">
+                {profile.username}
+              </strong>
+            </h1>
+          )}
+
           <p className="mt-4 sm:text-xl sm:leading-relaxed">
-            A simple Jira clone - create tasks and arrange them through drag and drop
+            A simple Jira clone - create tasks and arrange them through drag and
+            drop
           </p>
         </div>
       </div>

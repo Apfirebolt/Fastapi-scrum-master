@@ -6,6 +6,7 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
   user: user ? user : null,
+  profile: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -47,8 +48,28 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 
 // Logout user
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout()
+  authService.logout()
 })
+
+// Get User Profile
+export const getUserProfile = createAsyncThunk(
+  "auth/profile",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.access_token;
+      return await authService.getUserProfile(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -91,8 +112,23 @@ export const authSlice = createSlice({
         state.message = action.payload
         state.user = null
       })
+      .addCase(getUserProfile.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.profile = action.payload
+      })
+      .addCase(getUserProfile.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.profile = null
+      })
       .addCase(logout.fulfilled, (state) => {
         state.user = null
+        state.profile = null
       })
   },
 })
