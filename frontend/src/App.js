@@ -4,6 +4,7 @@ import LoginScreen from "./pages/Login";
 import RegisterScreen from "./pages/Register";
 import AddTaskScreen from "./pages/AddTask";
 import KanbanScreen from "./pages/Kanban";
+import SchedulerScreen from "./pages/Scheduler";
 import TaskDetailScreen from "./pages/TaskDetail";
 import { ToastContainer } from 'react-toastify';
 import PrivateRoute from "./components/PrivateRoute";
@@ -17,6 +18,7 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<HomeScreen />} exact />
+        <Route path="/scheduler" element={<SchedulerScreen />} exact />
         <Route path="/login" element={<LoginScreen />} exact />
         <Route path="/register" element={<RegisterScreen />} exact />
         <Route path="/task" element={<PrivateRoute />}>

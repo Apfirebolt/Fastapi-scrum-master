@@ -50,6 +50,12 @@ const Header = () => {
                   Add Task
                 </Link>
                 <Link
+                  to="scheduler"
+                  className="text-sm font-medium text-white hover:text-gray-100"
+                >
+                  Scheduler
+                </Link>
+                <Link
                   to="/kanban"
                   className="text-sm font-medium text-white hover:text-gray-100"
                 >

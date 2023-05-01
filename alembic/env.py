@@ -32,7 +32,7 @@ target_metadata = Base.metadata
 def get_url():
     db_user = 'postgres'
     db_password = 'pass123'
-    db_host ='db'
+    db_host ='localhost'
     db_name = 'fastapi-react'
     return f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
 
