@@ -30,12 +30,9 @@ Kanban board displaying all the tasks which is the core feature of this applicat
 
 ![alt text](./screenshots/kanban.PNG)
 
-## Deployment
+## Deployment using Docker containers
 
-In future I plan to write YAML script to deploy this on local using Docker containers.
-
-
-
-
-
-
+```sh
+$ docker-compose up -d --build
+$ docker-compose exec web alembic upgrade head
+```
