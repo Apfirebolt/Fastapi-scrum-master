@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../../features/admin/adminSlice";
 import Loader from "../../components/Loader";
 
 const AllTasks = () => {
   const { tasks, isLoading } = useSelector((state) => state.adminData);
+  const { profile } = useSelector((state) => state.auth);
+  const navigate = useNavigate()
 
   const dispatch = useDispatch();
 
@@ -12,7 +15,11 @@ const AllTasks = () => {
     dispatch(getTasks());
   }, [dispatch]);
 
-  console.log(tasks);
+  useEffect(() => {
+    if (profile && profile.role !== 'admin') {
+      navigate('/login')
+    }
+  }, [profile, navigate]);
 
   if (isLoading) {
     return <Loader />;
@@ -50,7 +57,7 @@ const AllTasks = () => {
           </thead>
 
           <tbody>
-            {tasks.map((item, index) => {
+            {tasks && tasks.map((item, index) => {
               return (
                 <tr key={index}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
