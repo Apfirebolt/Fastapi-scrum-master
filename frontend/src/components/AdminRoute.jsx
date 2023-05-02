@@ -5,6 +5,8 @@ import Loader from './Loader'
 const AdminRoute = () => {
   const { isAdmin, checkingStatus } = useAdminStatus()
 
+  console.log('Admin check ', isAdmin, checkingStatus)
+
   if (checkingStatus) {
     return <Loader />
   }

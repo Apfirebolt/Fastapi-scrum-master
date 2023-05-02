@@ -1,63 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import authService from './authService'
+import adminService from './adminService'
 
-// Get user from localstorage
-const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
-  user: user ? user : null,
-  profile: null,
+  users: [],
+  tasks: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
 }
 
-// Register new user
-export const register = createAsyncThunk(
-  'auth/register',
-  async (user, thunkAPI) => {
-    try {
-      return await authService.register(user)
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-// Login user
-export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
-  try {
-    return await authService.login(user)
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString()
-
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
-// Logout user
-export const logout = createAsyncThunk('auth/logout', async () => {
-  authService.logout()
-})
-
-// Get User Profile
-export const getUserProfile = createAsyncThunk(
-  "auth/profile",
+// Get Multiple Tasks
+export const getTasks = createAsyncThunk(
+  "admin/tasks",
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.access_token;
-      return await authService.getUserProfile(token);
+      return await adminService.getTasks(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -71,7 +31,27 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
-export const authSlice = createSlice({
+// Get Multiple Users
+export const getUsers = createAsyncThunk(
+  "admin/users",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.access_token;
+      return await adminService.getUsers(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const adminSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -84,54 +64,36 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
+      .addCase(getUsers.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(getUsers.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.user = action.payload
+        state.users = action.payload
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(getUsers.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.user = null
+        state.users = []
       })
-      .addCase(login.pending, (state) => {
+      .addCase(getTasks.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(getTasks.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.user = action.payload
+        state.tasks = action.payload
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(getTasks.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.user = null
-      })
-      .addCase(getUserProfile.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-        state.profile = action.payload
-      })
-      .addCase(getUserProfile.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
-        state.profile = null
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null
-        state.profile = null
+        state.tasks = []
       })
   },
 })
 
-export const { reset } = authSlice.actions
-export default authSlice.reducer
+export const { reset } = adminSlice.actions
+export default adminSlice.reducer

@@ -8,7 +8,7 @@ export const useAdminStatus = () => {
   const { profile } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if (profile.role === 'admin') {
+    if (profile && profile.role === 'admin') {
       setIsAdmin(true)
     } else {
       setIsAdmin(false)

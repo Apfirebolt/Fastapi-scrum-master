@@ -1,18 +1,16 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-const API_URL = 'http://localhost:8000/task/'
+const API_URL = 'http://localhost:8000/admin/'
 
-// Create new task
-const createTask = async (taskData, token) => {
+// Get all users
+const getUsers = async (token) => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
-  
-    const response = await axios.post(API_URL, taskData, config)
-  
+    const response = await axios.get(API_URL + 'users', config)
     return response.data
   } catch (err) {
     let errorMessage = 'Something went wrong'
@@ -23,7 +21,8 @@ const createTask = async (taskData, token) => {
   }
 }
 
-// Get user tasks
+
+// Get all tasks
 const getTasks = async (token) => {
   try {
     const config = {
@@ -31,7 +30,7 @@ const getTasks = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     }
-    const response = await axios.get(API_URL, config)
+    const response = await axios.get(API_URL + 'tasks', config)
     return response.data
   } catch (err) {
     let errorMessage = 'Something went wrong'
@@ -40,49 +39,6 @@ const getTasks = async (token) => {
     }
     toast.error(errorMessage)
   }
-}
-
-// Get single Task
-const getTask = async (taskId, token) => {
-  try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  
-    const response = await axios.get(API_URL + taskId, config)
-  
-    return response.data
-  } catch (err) {
-    let errorMessage = 'Something went wrong'
-    if (err.response.status === 401) {
-      errorMessage = 'Unauthorized access, please login again.'
-    }
-    toast.error(errorMessage)
-  }
-}
-
-// Update Task
-const updateTask = async (data, token) => {
- try {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-
-  // Extract the ID from the data payload
-  const response = await axios.patch(API_URL + data.id, data, config)
-
-  return response.data
- } catch (err) {
-  let errorMessage = 'Something went wrong'
-    if (err.response.status === 401) {
-      errorMessage = 'Unauthorized access, please login again.'
-    }
-    toast.error(errorMessage)
- }
 }
 
 // Delete single Task
@@ -94,7 +50,7 @@ const deleteTask = async (taskId, token) => {
       },
     }
   
-    const response = await axios.delete(API_URL + taskId, config)
+    const response = await axios.delete(API_URL + 'task/' + taskId, config)
   
     return response.data
   } catch (err) {
@@ -106,12 +62,10 @@ const deleteTask = async (taskId, token) => {
   }
 }
 
-const taskService = {
-  createTask,
-  getTask,
-  updateTask,
+const adminService = {
   deleteTask,
   getTasks,
+  getUsers
 }
 
-export default taskService
+export default adminService
