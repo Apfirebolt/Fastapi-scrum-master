@@ -31,6 +31,26 @@ export const getTasks = createAsyncThunk(
   }
 );
 
+// Delete Multiple Tasks
+export const deleteTasks = createAsyncThunk(
+  "admin/tasks/delete",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.access_token;
+      return await adminService.deleteTasks(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // Get Multiple Users
 export const getUsers = createAsyncThunk(
   "admin/users",
@@ -91,6 +111,18 @@ export const adminSlice = createSlice({
         state.isError = true
         state.message = action.payload
         state.tasks = []
+      })
+      .addCase(deleteTasks.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteTasks.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+      })
+      .addCase(deleteTasks.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
       })
   },
 })

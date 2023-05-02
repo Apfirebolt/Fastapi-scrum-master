@@ -61,6 +61,15 @@ async def get_user_by_id(database: Session = Depends(db.get_db),
     return await adminServices.all_tasks(database)
 
 
+@router.delete('/tasks/delete', status_code=status.HTTP_200_OK)
+async def delete_all_tasks(database: Session = Depends(db.get_db),
+                                current_user: User = Depends(get_current_user)):                            
+    user = database.query(User).filter(User.email == current_user.email).first()
+    if user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")
+    return await adminServices.delete_all_tasks(database)
+
+
 @router.get('/tasks/{task_id}', status_code=status.HTTP_200_OK, response_model=taskSchema.TaskBase)
 async def get_task_by_id(task_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
@@ -88,19 +97,3 @@ async def update_user_by_id(request: taskSchema.TaskUpdate, task_id: int, databa
     if user.role != 'admin':
         raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")                            
     return await adminServices.update_task_by_id(request, task_id, database)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

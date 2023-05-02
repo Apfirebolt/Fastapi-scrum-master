@@ -62,10 +62,35 @@ const deleteTask = async (taskId, token) => {
   }
 }
 
+// Delete all Tasks
+const deleteTasks = async (token) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios.delete(API_URL + 'tasks/delete', config)
+
+    if (response) {
+      toast.success('All tasks deleted!')
+    }
+  
+    return response.data
+  } catch (err) {
+    let errorMessage = 'Something went wrong'
+    if (err.response.status === 401) {
+      errorMessage = 'Unauthorized access, please login again.'
+    }
+    toast.error(errorMessage)
+  }
+}
+
 const adminService = {
   deleteTask,
   getTasks,
-  getUsers
+  getUsers,
+  deleteTasks
 }
 
 export default adminService

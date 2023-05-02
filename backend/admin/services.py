@@ -46,6 +46,13 @@ async def all_tasks(database) -> List[Task]:
     tasks = database.query(Task).all()
     return tasks
 
+async def delete_all_tasks(database):
+    database.query(Task).delete()
+    database.commit()
+    return {
+        'message': 'All tasks deleted'
+    }
+
 
 async def get_task_by_id(task_id, database):
     task = database.query(User).filter_by(id=task_id).first()
