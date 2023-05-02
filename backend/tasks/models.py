@@ -11,6 +11,7 @@ class Task(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     createdDate = Column(DateTime, default=datetime.now)
+    dueDate = Column(DateTime, default=datetime.now)
     title = Column(String(50))
     description = Column(Text)
     status = Column(String(50))

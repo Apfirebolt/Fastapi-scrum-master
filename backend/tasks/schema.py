@@ -17,6 +17,7 @@ class TaskBase(BaseModel):
     title: str
     description: str
     status: str
+    dueDate: date
 
     class Config:
         orm_mode = True
@@ -38,7 +39,8 @@ class TaskList(BaseModel):
     status: str
     owner_id: int
     owner: UserSchema
-    createdDate: Optional[date]
+    createdDate: date
+    dueDate: date
 
     class Config:
         orm_mode = True

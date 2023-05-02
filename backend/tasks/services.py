@@ -6,7 +6,7 @@ from datetime import datetime
 
 async def create_new_task(request, database, current_user) -> models.Task:
     new_task = models.Task(title=request.title, description=request.description, status=request.status,
-                                    owner_id=current_user.id, createdDate=datetime.now())
+                                    owner_id=current_user.id, createdDate=datetime.now(), dueDate=request.dueDate)
     database.add(new_task)
     database.commit()
     database.refresh(new_task)
