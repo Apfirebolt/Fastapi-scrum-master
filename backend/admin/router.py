@@ -65,7 +65,6 @@ async def get_user_by_id(database: Session = Depends(db.get_db),
 async def get_task_by_id(task_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
     user = database.query(User).filter(User.email == current_user.email).first()
-    print('Database ', database)
     if user.role != 'admin':
         raise HTTPException(status_code=403, detail="Only admins are allowed to perform this action")
     return await taskServices.get_task_by_id(task_id, database)

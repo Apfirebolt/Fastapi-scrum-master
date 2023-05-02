@@ -1,22 +1,9 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserProfile } from "../features/auth/authSlice";
-import Loader from "../components/Loader";
+import React from "react";
+import { useSelector } from "react-redux";
+
 
 const Home = () => {
-  const { profile, user, isLoading } = useSelector((state) => state.auth);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getUserProfile());
-    }
-  }, [dispatch, user]);
-
-  if (isLoading) {
-    return <Loader />;
-  }
+  const { profile } = useSelector((state) => state.auth);
 
   return (
     <div className="bg-gray-50">

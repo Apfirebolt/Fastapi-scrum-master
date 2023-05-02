@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { logout, reset } from "../features/auth/authSlice";
+import { logout, reset, getUserProfile } from "../features/auth/authSlice";
+import Loader from "./Loader";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+
+  const { profile, user, isLoading } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserProfile());
+    }
+  }, [dispatch, user]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  console.log(profile)
 
   const toastMessage = "Logged out successfully";
   const toastOptions = {
@@ -66,6 +80,12 @@ const Header = () => {
                   className="text-sm font-medium text-white hover:text-gray-100"
                 >
                   Home
+                </Link>
+                <Link
+                  to="/admin/tasks"
+                  className="text-sm font-medium text-white hover:text-gray-100"
+                >
+                  Admin
                 </Link>
               </div>
             ) : (

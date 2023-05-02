@@ -22,10 +22,10 @@ const Scheduler = () => {
           <h1 className="text-3xl font-extrabold sm:text-5xl">Scheduler</h1>
         </div>
       </div>
-      <div class="grid grid-cols-7 px-2 gap-2">
+      <div className="grid grid-cols-7 px-2 gap-2">
         {monthDays.map((item, index) => {
           return (
-            <div class="p-6 my-2 bg-blue-300 text-gray-700 text-center shadow-inner">
+            <div key={index} className="p-6 my-2 bg-blue-300 text-gray-700 text-center shadow-inner">
               <p>{item}</p>
             </div>
           );

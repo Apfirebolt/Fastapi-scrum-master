@@ -21,6 +21,7 @@ class DisplayAccount(BaseModel):
     email: str
     firstName: Optional[str]
     lastName: Optional[str]
+    role: Optional[str]
 
     class Config:
         orm_mode = True

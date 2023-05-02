@@ -1,11 +1,11 @@
 from fastapi import HTTPException, status
 from typing import List
-from datetime import datetime
 
 from backend.auth.models import User
 from backend.tasks.models import Task
 from backend.tasks import services as taskServices
 from backend.auth import services as userServices
+from backend.auth.schema import DisplayAccount
 
 
 async def get_user_by_id(user_id, database):
@@ -37,6 +37,10 @@ async def update_user_by_id(request, user_id, database):
     database.refresh(user)
     return user
 
+
+async def all_users(database) -> List[DisplayAccount]:
+    users = database.query(User).all()
+    return users
 
 async def all_tasks(database) -> List[Task]:
     tasks = database.query(Task).all()
