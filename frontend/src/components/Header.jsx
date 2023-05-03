@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { profile, user, isLoading } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user) {
@@ -20,8 +20,6 @@ const Header = () => {
   if (isLoading) {
     return <Loader />;
   }
-
-  console.log(profile)
 
   const toastMessage = "Logged out successfully";
   const toastOptions = {

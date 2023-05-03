@@ -10,7 +10,6 @@ const createTask = async (taskData, token) => {
         Authorization: `Bearer ${token}`,
       },
     }
-    console.log('Task data ', taskData)
     const response = await axios.post(API_URL, taskData, config)
   
     return response.data
