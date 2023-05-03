@@ -72,8 +72,10 @@ const AddTask = () => {
     reset({
       title: task.title,
       description: task.description,
+      status: task.status,
+      dueDate: task.dueDate
     });
-  }, [task]);
+  }, [task, reset]);
 
   const deleteTaskUtil = (e) => {
     e.preventDefault();
@@ -161,6 +163,23 @@ const AddTask = () => {
           ))}
         </select>
         {errors.status && <p className="text-red-500">Status is required.</p>}
+      </div>
+
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="dueDate"
+        >
+          Due Date
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="dueDate"
+          type="date"
+          placeholder="Select Due Date"
+          {...register('dueDate', { required: true })}
+        />
+        {errors.dueDate && <p className="text-red-500">Due Date is required.</p>}
       </div>
 
       <div>

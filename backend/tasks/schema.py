@@ -27,6 +27,7 @@ class TaskUpdate(BaseModel):
     title: Optional[str]
     description: Optional[str]
     status: Optional[str]
+    dueDate: Optional[date]
 
     class Config:
         orm_mode = True

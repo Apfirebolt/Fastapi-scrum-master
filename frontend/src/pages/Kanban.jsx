@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import dayjs from 'dayjs';
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks, updateTask } from "../features/tasks/taskSlice";
@@ -105,8 +106,11 @@ const Kanban = () => {
                                     <p className="text-gray-700 text-base">
                                       {item.description}
                                     </p>
+                                    <p className="text-gray-700 my-3 text-base text-bold">
+                                      Due on - {dayjs(item.dueDate).format('DD/MM/YYYY')}
+                                    </p>
                                   </div>
-                                  <div className="px-6 pt-4 pb-2">
+                                  <div className="p-3 text-center">
                                     <Link
                                       to={`/task/${item.id}`}
                                       className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
