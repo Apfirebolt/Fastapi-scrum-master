@@ -9,7 +9,7 @@ import Loader from '../components/Loader';
 const Kanban = () => {
   const [stateData, updateStateData] = useState({});
 
-  const { tasks, isLoading, isError, isSuccess, message } = useSelector(
+  const { tasks, isLoading } = useSelector(
     (state) => state.taskData
   );
 
