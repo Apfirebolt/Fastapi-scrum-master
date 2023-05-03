@@ -36,25 +36,24 @@ const Scheduler = () => {
         if (dateObj) {
           dateObj.tasks.push(item);
         }
-        
       });
     setMonthDays(days);
   }, [tasks, startDate]);
 
   const goToNextMonth = () => {
     let nextMonth = startDate.add(1, "month");
-    setStartDate(nextMonth)
-    updateTaskData(nextMonth)
+    setStartDate(nextMonth);
+    updateTaskData(nextMonth);
   };
 
   const goToPreviousMonth = () => {
     let previousMonth = startDate.add(-1, "month");
-    setStartDate(previousMonth)
-    updateTaskData(previousMonth)
+    setStartDate(previousMonth);
+    updateTaskData(previousMonth);
   };
 
   const updateTaskData = (month) => {
-    let days = []
+    let days = [];
     let daysInCurrentMonth = month.daysInMonth();
     for (let i = 0; i < daysInCurrentMonth; i += 1) {
       let currentDate = startDate.add(i, "day");
@@ -87,14 +86,20 @@ const Scheduler = () => {
           <h1 className="text-3xl font-extrabold sm:text-5xl">Scheduler</h1>
         </div>
       </div>
-      <div className="flex justify-around bg-blue-700 text-white w-full p-3">
-        <button className="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onClick={() => goToPreviousMonth()}>
+      <div className="flex justify-around items-center bg-blue-700 text-white w-full p-3">
+        <button
+          className="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+          onClick={() => goToPreviousMonth()}
+        >
           Previous Month
         </button>
-        <p>
-          {dayjs(startDate).format('MMMM')} - {dayjs(startDate).year()}
+        <p className="font-bold text-2xl text-red-400">
+          {dayjs(startDate).format("MMMM")} - {dayjs(startDate).year()}
         </p>
-        <button className="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onClick={() => goToNextMonth()}>
+        <button
+          className="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+          onClick={() => goToNextMonth()}
+        >
           Next Month
         </button>
       </div>
@@ -103,23 +108,25 @@ const Scheduler = () => {
           return (
             <div
               key={index}
-              className="p-6 my-2 bg-blue-300 text-gray-700 text-center shadow-inner"
+              className="my-2 bg-blue-300 text-gray-700 text-center shadow-inner"
             >
-              <p>{dayjs(item.date).format("MMMM D, YYYY")}</p>
-              {item.tasks.length ? (
-                item.tasks.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="bg-gray-100 px-3 py-2 shadow-lg rounded-md my-2"
-                    >
-                      <p>{item.title}</p>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>No tasks</p>
-              )}
+              <p className="bg-red-900 text-gray-200 text-bold text-xl p-3">{dayjs(item.date).format("MMMM D, YYYY")}</p>
+              <div className="p-2">
+                {item.tasks.length ? (
+                  item.tasks.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="bg-gray-100 shadow-lg rounded-md my-2"
+                      >
+                        <p>{item.title}</p>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>No tasks</p>
+                )}
+              </div>
             </div>
           );
         })}
