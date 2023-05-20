@@ -18,6 +18,8 @@ It has supoort for multi-user authentication.
 
 27/12/22 : Added Admin panel with support of being able to add users and tasks, modify any user or task for admin role user type.
 
+1/5/23 : Scheduler was added which shows a custom calendar and all the tasks you have for a given date. Custom calendar is made using dayjs library in Javascript.
+
 ## Screenshots
 
 The style might be a subject to change in the future for this project. But, as of now this is how few pages look like
@@ -29,6 +31,8 @@ Add Task form.
 Kanban board displaying all the tasks which is the core feature of this application.
 
 ![alt text](./screenshots/kanban.PNG)
+
+A working demo of the application in form of video can be found here https://www.youtube.com/watch?v=oJZs_70UR2E
 
 ## Deployment using Docker containers
 
