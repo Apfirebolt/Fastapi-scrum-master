@@ -62,6 +62,12 @@ const Header = () => {
                   Add Task
                 </Link>
                 <Link
+                  to="project"
+                  className="text-sm font-medium text-white hover:text-gray-100"
+                >
+                  Add Project
+                </Link>
+                <Link
                   to="scheduler"
                   className="text-sm font-medium text-white hover:text-gray-100"
                 >

@@ -3,6 +3,7 @@ import HomeScreen from "./pages/Home";
 import LoginScreen from "./pages/Login";
 import RegisterScreen from "./pages/Register";
 import AddTaskScreen from "./pages/AddTask";
+import AddProjectScreen from "./pages/AddProject";
 import KanbanScreen from "./pages/Kanban";
 import SchedulerScreen from "./pages/Scheduler";
 import TaskDetailScreen from "./pages/TaskDetail";
@@ -23,6 +24,9 @@ const App = () => {
         <Route path="/scheduler" element={<SchedulerScreen />} exact />
         <Route path="/login" element={<LoginScreen />} exact />
         <Route path="/register" element={<RegisterScreen />} exact />
+        <Route path="/project" element={<PrivateRoute />}>
+          <Route path="/project" element={<AddProjectScreen />} />
+        </Route>
         <Route path="/task" element={<PrivateRoute />}>
           <Route path="/task" element={<AddTaskScreen />} />
         </Route>

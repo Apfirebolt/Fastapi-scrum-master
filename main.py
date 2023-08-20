@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
+from fastapi_utils.tasks import repeat_every
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,7 +33,6 @@ app.include_router(admin_router.router)
 app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
 templates = Jinja2Templates(directory="frontend/build")
-
 
 # Middleware to calculate response time of an API
 @app.middleware("http")

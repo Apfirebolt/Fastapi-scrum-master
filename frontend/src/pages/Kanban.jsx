@@ -48,7 +48,6 @@ const Kanban = () => {
         stateData[result.destination.droppableId]
       );
       let sourceArray = Array.from(stateData[result.source.droppableId]);
-
       if (result.destination.droppableId !== result.source.droppableId) {
         const itemInserted = sourceArray[result.source.index];
         sourceArray.splice(result.source.index, 1);
