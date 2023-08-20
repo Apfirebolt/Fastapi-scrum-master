@@ -28,6 +28,7 @@ class TaskUpdate(BaseModel):
     title: Optional[str]
     description: Optional[str]
     status: Optional[str]
+    project_id: Optional[int]
     dueDate: Optional[date]
 
     class Config:
@@ -40,6 +41,7 @@ class TaskList(BaseModel):
     description: str
     status: str
     owner_id: int
+    project_id: Optional[int]
     owner: UserSchema
     createdDate: date
     dueDate: date

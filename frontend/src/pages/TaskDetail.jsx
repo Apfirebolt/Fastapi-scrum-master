@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
+import { getProjects } from "../features/projects/projectSlice";
 import {
   updateTask,
   getTask,
@@ -68,6 +69,12 @@ const AddTask = () => {
     },
   });
 
+  const { projects } = useSelector((state) => state.projectData);
+
+  useEffect(() => {
+    dispatch(getProjects());
+  }, [dispatch]);
+
   useEffect(() => {
     reset({
       title: task.title,
@@ -129,6 +136,37 @@ const AddTask = () => {
         {errors.description && (
           <p className="text-red-500">Description is required.</p>
         )}
+      </div>
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="project_id"
+        >
+          Project
+        </label>
+        <select
+          {...register("project_id", { required: false })}
+          className="form-select appearance-none
+                block
+                w-full
+                px-3
+                py-1.5
+                text-base
+                font-normal
+                text-gray-700
+                bg-white bg-clip-padding bg-no-repeat
+                border border-solid border-gray-300
+                rounded
+                transition
+                ease-in-out
+                m-0
+                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          aria-label="Default select example"
+        >
+          {projects.map((item, index) => (
+              <option key={index} value={item.id}>{item.title}</option>
+          ))}
+        </select>
       </div>
       <div className="mb-4">
         <label

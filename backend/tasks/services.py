@@ -44,6 +44,7 @@ async def update_task_by_id(request, task_id, current_user, database):
     task.title = request.title if request.title else task.title
     task.description = request.description if request.description else task.description
     task.status = request.status if request.status else task.status
+    task.project_id = request.project_id if request.project_id else task.project_id
     task.dueDate = request.dueDate if request.dueDate else task.dueDate
     database.commit()
     database.refresh(task)

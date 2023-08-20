@@ -110,7 +110,7 @@ const AddTask = () => {
                     aria-label="Default select example"
         >
           {projects.map((item, index) => (
-              <option key={index} value={item.title}>{item.title}</option>
+              <option key={index} value={item.id}>{item.title}</option>
           ))}
         </select>
       </div>
