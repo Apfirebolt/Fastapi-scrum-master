@@ -16,5 +16,6 @@ class Project(Base):
     owner_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
 
     owner = relationship("User", back_populates="projects")
+    tasks = relationship("Task", back_populates="project")
 
 

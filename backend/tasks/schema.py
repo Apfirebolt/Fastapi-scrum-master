@@ -17,6 +17,7 @@ class TaskBase(BaseModel):
     title: str
     description: str
     status: str
+    project_id: int
     dueDate: date
 
     class Config:

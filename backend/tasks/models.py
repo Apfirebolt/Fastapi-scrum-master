@@ -16,7 +16,9 @@ class Task(Base):
     description = Column(Text)
     status = Column(String(50))
     owner_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+    project_id = Column(Integer, ForeignKey("project.id", ondelete="CASCADE"))
 
     owner = relationship("User", back_populates="tasks")
+    project = relationship("Project", back_populates="tasks")
 
 

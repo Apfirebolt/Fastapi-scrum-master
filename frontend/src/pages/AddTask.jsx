@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { createTask, resetVariables } from "../features/tasks/taskSlice";
+import { getProjects } from "../features/projects/projectSlice";
 
 const AddTask = () => {
 
@@ -22,8 +23,13 @@ const AddTask = () => {
     (state) => state.taskData
   );
 
-  useEffect(() => {
+  const { projects } = useSelector((state) => state.projectData);
 
+  useEffect(() => {
+    dispatch(getProjects());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (isError) {
       toast.error(message)
       dispatch(resetVariables())
@@ -77,6 +83,38 @@ const AddTask = () => {
         ></textarea>
         {errors.description && <p className="text-red-500">Description is required.</p>}
       </div>
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="project"
+        >
+          Project
+        </label>
+        <select
+          {...register('project_id', { required: true })}  
+          className="form-select appearance-none
+                block
+                w-full
+                px-3
+                py-1.5
+                text-base
+                font-normal
+                text-gray-700
+                bg-white bg-clip-padding bg-no-repeat
+                border border-solid border-gray-300
+                rounded
+                transition
+                ease-in-out
+                m-0
+                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    aria-label="Default select example"
+        >
+          {projects.map((item, index) => (
+              <option key={index} value={item.title}>{item.title}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"

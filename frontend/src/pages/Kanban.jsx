@@ -25,7 +25,7 @@ const Kanban = () => {
         "To Do": [],
         "In Progress": [],
         "In Review": [],
-        Done: [],
+        "Done": [],
       };
       tasks.forEach((item) => {
         columnData[item["status"]].push(item);

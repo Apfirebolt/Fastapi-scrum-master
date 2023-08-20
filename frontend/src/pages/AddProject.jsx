@@ -31,7 +31,7 @@ const AddProject = () => {
     if (isSuccess && toastMessage) {
       toast.success(toastMessage)
       dispatch(resetVariables())
-      navigate('/kanban')
+      navigate('/projects')
     }
   }, [dispatch, isError, isSuccess, message, navigate, toastMessage])
 

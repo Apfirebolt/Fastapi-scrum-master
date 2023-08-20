@@ -68,6 +68,12 @@ const Header = () => {
                   Add Project
                 </Link>
                 <Link
+                  to="projects"
+                  className="text-sm font-medium text-white hover:text-gray-100"
+                >
+                  All Projects
+                </Link>
+                <Link
                   to="scheduler"
                   className="text-sm font-medium text-white hover:text-gray-100"
                 >
