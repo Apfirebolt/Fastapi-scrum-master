@@ -10,6 +10,7 @@ import uvicorn
 from backend.auth import router as auth_router
 from backend.tasks import router as task_router
 from backend.admin import router as admin_router
+from backend.project import router as project_router
 
 app = FastAPI(title="Fast API Blog",
     docs_url="/scrum-master-docs",
@@ -29,6 +30,7 @@ app.add_middleware(
 app.include_router(auth_router.router)
 app.include_router(task_router.router)
 app.include_router(admin_router.router)
+app.include_router(project_router.router)
 
 app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 

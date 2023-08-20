@@ -42,7 +42,7 @@ const AddProject = () => {
 
   return (
     <form onSubmit={handleSubmit((data) => createProjectUtil(data))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
-      <p className="text-center text-2xl my-3 text-red-700">ADD Project</p>
+      <p className="text-center text-2xl my-3 text-red-700">ADD PROJECT</p>
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"

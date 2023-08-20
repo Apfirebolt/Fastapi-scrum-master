@@ -11,42 +11,42 @@ from .import services
 
 
 router = APIRouter(
-    tags=["Task"],
-    prefix='/task'
+    tags=["Project"],
+    prefix='/project'
 )
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED,
-             response_model=schema.TaskBase)
-async def create_new_task(request: schema.TaskBase, database: Session = Depends(db.get_db), 
+             response_model=schema.ProjectBase)
+async def create_new_project(request: schema.ProjectBase, database: Session = Depends(db.get_db), 
     current_user: User = Depends(get_current_user)):
     user = database.query(User).filter(User.email == current_user.email).first()
-    result = await services.create_new_task(request, database, user)
+    result = await services.create_new_project(request, database, user)
     return result
 
 
 @router.get('/', status_code=status.HTTP_200_OK,
-            response_model=List[schema.TaskList])
-async def task_list(database: Session = Depends(db.get_db),
+            response_model=List[schema.ProjectList])
+async def project_list(database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):
-    result = await services.get_task_listing(database, current_user.id)
+    result = await services.get_project_listing(database, current_user.id)
     return result
 
 
-@router.get('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
-async def get_task_by_id(task_id: int, database: Session = Depends(db.get_db),
+@router.get('/{project_id}', status_code=status.HTTP_200_OK, response_model=schema.ProjectBase)
+async def get_project_by_id(project_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
-    return await services.get_task_by_id(task_id, current_user.id, database)
+    return await services.get_project_by_id(project_id, current_user.id, database)
 
 
-@router.delete('/{task_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
-async def delete_task_by_id(task_id: int,
+@router.delete('/{project_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+async def delete_project_by_id(project_id: int,
                                 database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):
-    return await services.delete_task_by_id(task_id, database)
+    return await services.delete_project_by_id(project_id, database)
 
 
-@router.patch('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
-async def update_task_by_id(request: schema.TaskUpdate, task_id: int, database: Session = Depends(db.get_db),
+@router.patch('/{project_id}', status_code=status.HTTP_200_OK, response_model=schema.ProjectBase)
+async def update_project_by_id(request: schema.ProjectUpdate, project_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
-    return await services.update_task_by_id(request, task_id, current_user.id, database)
+    return await services.update_project_by_id(request, project_id, current_user.id, database)

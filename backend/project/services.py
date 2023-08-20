@@ -4,47 +4,45 @@ from . import models
 from datetime import datetime
 
 
-async def create_new_task(request, database, current_user) -> models.Task:
-    new_task = models.Task(title=request.title, description=request.description, status=request.status,
-                                    owner_id=current_user.id, createdDate=datetime.now(), dueDate=request.dueDate)
-    database.add(new_task)
+async def create_new_project(request, database, current_user) -> models.Project:
+    new_project = models.Project(title=request.title, description=request.description,
+                                    owner_id=current_user.id, createdDate=datetime.now())
+    database.add(new_project)
     database.commit()
-    database.refresh(new_task)
-    return new_task
+    database.refresh(new_project)
+    return new_project
 
 
-async def get_task_listing(database, current_user) -> List[models.Task]:
-    tasks = database.query(models.Task).filter(models.Task.owner_id == current_user).all()
-    return tasks
+async def get_project_listing(database, current_user) -> List[models.Project]:
+    projects = database.query(models.Project).filter(models.Project.owner_id == current_user).all()
+    return projects
 
 
-async def get_task_by_id(task_id, current_user, database):
-    task = database.query(models.Task).filter_by(id=task_id, owner_id=current_user).first()
-    if not task:
+async def get_project_by_id(project_id, current_user, database):
+    project = database.query(models.Project).filter_by(id=project_id, owner_id=current_user).first()
+    if not project:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="task Not Found !"
+            detail="project Not Found !"
         )
-    return task
+    return project
 
 
-async def delete_task_by_id(task_id, database):
-    database.query(models.Task).filter(
-        models.Task.id == task_id).delete()
+async def delete_project_by_id(project_id, database):
+    database.query(models.Project).filter(
+        models.Project.id == project_id).delete()
     database.commit()
 
 
-async def update_task_by_id(request, task_id, current_user, database):
-    task = database.query(models.Task).filter_by(id=task_id, owner_id=current_user).first()
-    if not task:
+async def update_project_by_id(request, project_id, current_user, database):
+    project = database.query(models.Project).filter_by(id=project_id, owner_id=current_user).first()
+    if not project:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="task Not Found !"
+            detail="project Not Found !"
         )
-    task.title = request.title if request.title else task.title
-    task.description = request.description if request.description else task.description
-    task.status = request.status if request.status else task.status
-    task.dueDate = request.dueDate if request.dueDate else task.dueDate
+    project.title = request.title if request.title else project.title
+    project.description = request.description if request.description else project.description
     database.commit()
-    database.refresh(task)
-    return task
+    database.refresh(project)
+    return project

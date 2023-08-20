@@ -17,6 +17,7 @@ class User(Base):
     password = Column(String(255))
 
     tasks = relationship("Task", back_populates="owner")
+    projects = relationship("Project", back_populates="owner")
 
     def __init__(self, username, email, role, password, firstName, lastName, *args, **kwargs):
         self.username = username
