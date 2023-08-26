@@ -8,6 +8,7 @@ import ProjectScreen from "./pages/Projects";
 import KanbanScreen from "./pages/Kanban";
 import SchedulerScreen from "./pages/Scheduler";
 import TaskDetailScreen from "./pages/TaskDetail";
+import ProjectDetail from "./pages/ProjectDetail";
 import TasksAdminPage from "./pages/admin/AllTasks";
 import UsersAdminPage from "./pages/admin/AllUsers";
 import { ToastContainer } from 'react-toastify';
@@ -39,6 +40,9 @@ const App = () => {
         </Route>
         <Route path='/task/:taskId' element={<PrivateRoute />}>
           <Route path='/task/:taskId' element={<TaskDetailScreen />} />
+        </Route>
+        <Route path='/project/:projectId' element={<PrivateRoute />}>
+          <Route path='/project/:projectId' element={<ProjectDetail />} />
         </Route>
         <Route path='/admin/tasks' element={<PrivateRoute />}>
           <Route path='/admin/tasks' element={<TasksAdminPage />} />

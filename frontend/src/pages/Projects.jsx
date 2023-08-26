@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProjects } from "../features/projects/projectSlice";
 import Loader from "../components/Loader";
+import ProjectCard from "../components/ProjectCard";
 
 const Project = () => {
   const { projects, isLoading } = useSelector((state) => state.projectData);
@@ -27,11 +28,7 @@ const Project = () => {
       <div className="grid grid-cols-7 px-2 gap-2 my-3">
         {projects.map((item, index) => {
           return (
-            <div key={index} className="shadow-lg px-2 py-4 bg-gray-100">
-              <h3 className="text-2xl text-center">
-                {item.title}
-              </h3>
-            </div>
+            <ProjectCard key={index} project={item} />
           );
         })}
       </div>
