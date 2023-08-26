@@ -9,13 +9,15 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const { user, profile, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user) {
       dispatch(getUserProfile());
     }
   }, [dispatch, user]);
+
+  console.log('User is ', profile)
 
   if (isLoading) {
     return <Loader />;
@@ -91,12 +93,15 @@ const Header = () => {
                 >
                   Home
                 </Link>
-                <Link
+                {profile && profile.role === "admin" &&(
+                  <Link
                   to="/admin/tasks"
                   className="text-sm font-medium text-white hover:text-gray-100"
                 >
                   Admin
                 </Link>
+                )
+              }
               </div>
             ) : (
               <>

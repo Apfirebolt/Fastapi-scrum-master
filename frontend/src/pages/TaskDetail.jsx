@@ -80,7 +80,8 @@ const AddTask = () => {
       title: task.title,
       description: task.description,
       status: task.status,
-      dueDate: task.dueDate
+      dueDate: task.dueDate,
+      project_id: task.project_id,
     });
   }, [task, reset]);
 

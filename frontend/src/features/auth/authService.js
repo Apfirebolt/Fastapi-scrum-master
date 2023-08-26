@@ -62,7 +62,10 @@ const getUserProfile = async (token) => {
   } catch (err) {
     let errorMessage = "Something went wrong";
     if (err.response.status === 401) {
+      // Token expired
       errorMessage = err.response.data.detail;
+      localStorage.removeItem("user")
+      
     }
     if (err.response.status === 404) {
       errorMessage = err.response.data.detail;

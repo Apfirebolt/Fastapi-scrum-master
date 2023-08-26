@@ -12,12 +12,22 @@ class UserSchema(BaseModel):
         orm_mode = True
 
 
+class ProjectSchema(BaseModel):
+    id: int
+    title: str
+
+    class Config:
+        orm_mode = True
+
+
+
 class TaskBase(BaseModel):
     id: Optional[int]
     title: str
     description: str
     status: str
     project_id: int
+    project: Optional[ProjectSchema]
     dueDate: date
 
     class Config:
@@ -41,7 +51,8 @@ class TaskList(BaseModel):
     description: str
     status: str
     owner_id: int
-    project_id: Optional[int]
+    project_id: int
+    project: ProjectSchema
     owner: UserSchema
     createdDate: date
     dueDate: date
