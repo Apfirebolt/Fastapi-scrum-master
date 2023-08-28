@@ -1,6 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import AwesomeSlider from "react-awesome-slider";
+import "react-awesome-slider/dist/styles.css";
 
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const { profile } = useSelector((state) => state.auth);
@@ -25,10 +27,22 @@ const Home = () => {
             </h1>
           )}
 
-          <p className="mt-4 sm:text-xl sm:leading-relaxed">
+          <p className="my-4 sm:text-xl sm:leading-relaxed">
             A simple Jira clone - create tasks and arrange them through drag and
             drop
           </p>
+
+          <AwesomeSlider>
+            <div>
+              <img src="https://images.unsplash.com/photo-1664575262619-b28fef7a40a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2932&q=80" alt="" />
+            </div>
+            <div>
+              <img src="https://images.unsplash.com/photo-1664575197229-3bbebc281874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80" alt="" />
+            </div>
+            <div>
+              <img src="https://plus.unsplash.com/premium_photo-1664461662789-b72903263bad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80" alt="" />
+            </div>
+          </AwesomeSlider>
         </div>
       </div>
     </div>

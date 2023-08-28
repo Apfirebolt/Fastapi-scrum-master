@@ -14,7 +14,7 @@ It is a simple Kanban board application where you have four status 'To Do', 'In 
 
 It has supoort for multi-user authentication.
 
-It now supports project CRUD operations. A task can be a part of a project.
+It now supports project CRUD operations. A task can be a part of a project. A slide-show component using the library react-awesome-slider was also added recently.
 
 ## Updates
 
