@@ -17,6 +17,9 @@ const register = async (userData) => {
     if (err.response.status === 401) {
       errorMessage = "Unauthorized access, please login again.";
     }
+    if (err.response.status === 400) {
+      errorMessage = err.response.data.detail;
+    }
     toast.error(errorMessage);
   }
 };
@@ -62,10 +65,10 @@ const getUserProfile = async (token) => {
   } catch (err) {
     let errorMessage = "Something went wrong";
     if (err.response.status === 401) {
-      // Token expired
       errorMessage = err.response.data.detail;
       localStorage.removeItem("user")
-      
+      // redirect to login
+      window.location.href = "/login";
     }
     if (err.response.status === 404) {
       errorMessage = err.response.data.detail;

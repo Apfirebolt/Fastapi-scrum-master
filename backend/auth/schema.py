@@ -1,6 +1,7 @@
 import email
 from typing import Optional, List
 from pydantic import BaseModel, constr, EmailStr
+from backend.tasks.schema import TaskBase
 
 
 class User(BaseModel):
@@ -22,6 +23,7 @@ class DisplayAccount(BaseModel):
     firstName: Optional[str]
     lastName: Optional[str]
     role: Optional[str]
+    tasks: List[TaskBase] = []
 
     class Config:
         orm_mode = True

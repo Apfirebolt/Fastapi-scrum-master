@@ -14,11 +14,15 @@ It is a simple Kanban board application where you have four status 'To Do', 'In 
 
 It has supoort for multi-user authentication.
 
+It now supports project CRUD operations. A task can be a part of a project.
+
 ## Updates
 
 27/12/22 : Added Admin panel with support of being able to add users and tasks, modify any user or task for admin role user type.
 
 1/5/23 : Scheduler was added which shows a custom calendar and all the tasks you have for a given date. Custom calendar is made using dayjs library in Javascript.
+
+28/8/23 : Project module added with CRUD operations, a task might be associated with a given project. Error handling has been improved.
 
 ## Screenshots
 
