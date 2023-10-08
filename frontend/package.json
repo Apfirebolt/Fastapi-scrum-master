@@ -10,6 +10,7 @@
     "axios": "^1.2.1",
     "dayjs": "^1.11.7",
     "draft-js": "^0.11.7",
+    "framer-motion": "^10.16.4",
     "react": "^18.2.0",
     "react-awesome-slider": "^4.1.0",
     "react-beautiful-dnd": "^13.1.1",
