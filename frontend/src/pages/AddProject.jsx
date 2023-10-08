@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -41,7 +42,11 @@ const AddProject = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => createProjectUtil(data))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
+    <motion.form 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onSubmit={handleSubmit((data) => createProjectUtil(data))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
       <p className="text-center text-2xl my-3 text-red-700">ADD PROJECT</p>
       <div className="mb-4">
         <label
@@ -79,7 +84,7 @@ const AddProject = () => {
 
       <input className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
         type="submit" value="Add Project" />
-    </form>
+    </motion.form>
   );
 };
 

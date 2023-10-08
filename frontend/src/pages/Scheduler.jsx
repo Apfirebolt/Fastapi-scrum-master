@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../features/tasks/taskSlice";
@@ -80,8 +81,10 @@ const Scheduler = () => {
   }
 
   return (
-    <div className="bg-gray-50">
-      <Loader />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}   
+      className="bg-gray-50">
       <div className="mx-auto max-w-screen-xl px-4 py-16 lg:flex lg:items-center">
         <div className="mx-auto max-w-xl text-center">
           <h1 className="text-3xl font-extrabold sm:text-5xl">Scheduler</h1>
@@ -132,7 +135,7 @@ const Scheduler = () => {
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
