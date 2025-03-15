@@ -50,3 +50,11 @@ async def delete_task_by_id(task_id: int,
 async def update_task_by_id(request: schema.TaskUpdate, task_id: int, database: Session = Depends(db.get_db),
                                 current_user: User = Depends(get_current_user)):                            
     return await services.update_task_by_id(request, task_id, current_user.id, database)
+
+
+@router.get('/logs', status_code=status.HTTP_200_OK,
+            response_model=List[schema.TaskLogBase])
+async def task_log_list(database: Session = Depends(db.get_db),
+                                current_user: User = Depends(get_current_user)):
+    result = await services.get_task_log_listing(database, current_user.id)
+    return result

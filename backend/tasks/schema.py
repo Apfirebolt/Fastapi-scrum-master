@@ -59,3 +59,13 @@ class TaskList(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class TaskLogBase(BaseModel):
+    id: int
+    createdDate: date
+    task_id: int
+    task: Optional[TaskBase]
+
+    class Config:
+        orm_mode = True

@@ -7,7 +7,7 @@ from alembic import context
 from backend.db import Base
 
 from backend.auth.models import User
-from backend.tasks.models import Task
+from backend.tasks.models import Task, TaskLog
 from backend.project.models import Project
 
 # this is the Alembic Config object, which provides

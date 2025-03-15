@@ -46,9 +46,19 @@ async def update_task_by_id(request, task_id, current_user, database):
     task.status = request.status if request.status else task.status
     task.project_id = request.project_id if request.project_id else task.project_id
     task.dueDate = request.dueDate if request.dueDate else task.dueDate
+
+    # create log
+    task_log = models.TaskLog(task_id=task_id)
+    database.add(task_log)
     database.commit()
     database.refresh(task)
     return task
+
+
+async def task_log_list(database, current_user):
+    task_logs = database.query(models.TaskLog).filter(models.TaskLog.owner_id == current_user).all()
+    return task_logs
+
 
 
 
