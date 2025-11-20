@@ -13,7 +13,7 @@ from backend.admin import router as admin_router
 from backend.project import router as project_router
 
 app = FastAPI(title="Fast API Blog",
-    docs_url="/scrum-master-docs",
+    docs_url="/docs",
     version="0.0.1")
 
 origins = ["http://localhost:3000",]
@@ -32,9 +32,9 @@ app.include_router(task_router.router)
 app.include_router(admin_router.router)
 app.include_router(project_router.router)
 
-app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
+# app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
-templates = Jinja2Templates(directory="frontend/build")
+# templates = Jinja2Templates(directory="frontend/build")
 
 # Middleware to calculate response time of an API
 @app.middleware("http")
@@ -45,13 +45,13 @@ async def add_process_time_header(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     return response
 
-@app.get("/{full_path:path}")
-async def serve_react_app(request: Request, full_path: str):
-    """Serve the react app
-    `full_path` variable is necessary to serve each possible endpoint with
-    `index.html` file in order to be compatible with `react-router-dom
-    """
-    return templates.TemplateResponse("index.html", {"request": request})
+# @app.get("/{full_path:path}")
+# async def serve_react_app(request: Request, full_path: str):
+#     """Serve the react app
+#     `full_path` variable is necessary to serve each possible endpoint with
+#     `index.html` file in order to be compatible with `react-router-dom
+#     """
+#     return templates.TemplateResponse("index.html", {"request": request})
 
 
 if __name__ == "__main__":

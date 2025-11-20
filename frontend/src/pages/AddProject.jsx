@@ -42,49 +42,67 @@ const AddProject = () => {
   }
 
   return (
-    <motion.form 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      onSubmit={handleSubmit((data) => createProjectUtil(data))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
-      <p className="text-center text-2xl my-3 text-red-700">ADD PROJECT</p>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="title"
-        >
-          Title
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="title"
-          type="text"
-          placeholder="Project Title"
-          {...register('title', { required: true })}
-        />
-        {errors.title && <p className="text-red-500">Title is required.</p>}
-      </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="description"
-        >
-          Description
-        </label>
-        <textarea
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="description"
-          type="text"
-          placeholder="Project Description"
-          rows="10"
-          {...register('description', { required: true })}
-        ></textarea>
-        {errors.description && <p className="text-red-500">Description is required.</p>}
-      </div>
+      className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4"
+    >
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            Create New Project
+          </h2>
+          
+          <form onSubmit={handleSubmit((data) => createProjectUtil(data))} className="space-y-6">
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="title"
+              >
+                Project Title
+              </label>
+              <input
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200 outline-none"
+                id="title"
+                type="text"
+                placeholder="Enter project title"
+                {...register('title', { required: true })}
+              />
+              {errors.title && (
+                <p className="text-red-500 text-sm mt-1">Title is required.</p>
+              )}
+            </div>
 
-      <input className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-        type="submit" value="Add Project" />
-    </motion.form>
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="description"
+              >
+                Project Description
+              </label>
+              <textarea
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200 outline-none resize-none"
+                id="description"
+                placeholder="Describe your project"
+                rows="8"
+                {...register('description', { required: true })}
+              ></textarea>
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">Description is required.</p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform transition duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              Create Project
+            </button>
+          </form>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

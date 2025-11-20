@@ -48,126 +48,109 @@ const AddTask = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => createTaskUtil(data))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
-      <p className="text-center text-2xl my-3 text-red-700">ADD TASK</p>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="title"
-        >
-          Title
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="title"
-          type="text"
-          placeholder="Task Title"
-          {...register('title', { required: true })}
-        />
-        {errors.title && <p className="text-red-500">Title is required.</p>}
-      </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="description"
-        >
-          Description
-        </label>
-        <textarea
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="description"
-          type="text"
-          placeholder="Task Description"
-          rows="10"
-          {...register('description', { required: true })}
-        ></textarea>
-        {errors.description && <p className="text-red-500">Description is required.</p>}
-      </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="project"
-        >
-          Project
-        </label>
-        <select
-          {...register('project_id', { required: true })}  
-          className="form-select appearance-none
-                block
-                w-full
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding bg-no-repeat
-                border border-solid border-gray-300
-                rounded
-                transition
-                ease-in-out
-                m-0
-                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    aria-label="Default select example"
-        >
-          {projects.map((item, index) => (
-              <option key={index} value={item.id}>{item.title}</option>
-          ))}
-        </select>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">Add New Task</h1>
+          
+          <form onSubmit={handleSubmit((data) => createTaskUtil(data))} className="space-y-6">
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="title"
+              >
+                Title
+              </label>
+              <input
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 outline-none"
+                id="title"
+                type="text"
+                placeholder="Enter task title"
+                {...register('title', { required: true })}
+              />
+              {errors.title && <p className="text-red-500 text-sm mt-1">Title is required.</p>}
+            </div>
 
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="status"
-        >
-          Status
-        </label>
-        <select
-          {...register('status', { required: true })}  
-          className="form-select appearance-none
-                block
-                w-full
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding bg-no-repeat
-                border border-solid border-gray-300
-                rounded
-                transition
-                ease-in-out
-                m-0
-                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    aria-label="Default select example"
-        >
-          {statusChoices.map((item, index) => (
-              <option key={index} value={item}>{item}</option>
-          ))}
-        </select>
-        {errors.status && <p className="text-red-500">Status is required.</p>}
-      </div>
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <textarea
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 outline-none resize-none"
+                id="description"
+                placeholder="Describe the task"
+                rows="6"
+                {...register('description', { required: true })}
+              ></textarea>
+              {errors.description && <p className="text-red-500 text-sm mt-1">Description is required.</p>}
+            </div>
 
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="dueDate"
-        >
-          Due Date
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="dueDate"
-          type="date"
-          placeholder="Select Due Date"
-          {...register('dueDate', { required: true })}
-        />
-        {errors.dueDate && <p className="text-red-500">Due Date is required.</p>}
-      </div>
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="project"
+              >
+                Project
+              </label>
+              <select
+                {...register('project_id', { required: true })}
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 outline-none bg-white cursor-pointer"
+                aria-label="Select project"
+              >
+                {projects.map((item, index) => (
+                  <option key={index} value={item.id}>{item.title}</option>
+                ))}
+              </select>
+            </div>
 
-      <input className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-        type="submit" value="Add Task" />
-    </form>
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="status"
+              >
+                Status
+              </label>
+              <select
+                {...register('status', { required: true })}
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 outline-none bg-white cursor-pointer"
+                aria-label="Select status"
+              >
+                {statusChoices.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))}
+              </select>
+              {errors.status && <p className="text-red-500 text-sm mt-1">Status is required.</p>}
+            </div>
+
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-700 mb-2"
+                htmlFor="dueDate"
+              >
+                Due Date
+              </label>
+              <input
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 outline-none"
+                id="dueDate"
+                type="date"
+                {...register('dueDate', { required: true })}
+              />
+              {errors.dueDate && <p className="text-red-500 text-sm mt-1">Due Date is required.</p>}
+            </div>
+
+            <button
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-200"
+              type="submit"
+            >
+              Add Task
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 
