@@ -9,57 +9,57 @@ const Home = () => {
   const { profile } = useSelector((state) => state.auth);
 
   return (
-    <div className="bg-gray-50">
-      <div className="mx-auto max-w-screen-xl px-4 py-16 lg:flex lg:items-center">
-        <div className="mx-auto max-w-xl text-center">
+    <div className="bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen">
+      <div className="mx-auto max-w-screen-xl px-4 py-20 flex flex-col lg:flex-row items-center gap-12">
+        <div className="flex-1 text-center lg:text-left">
           <motion.h1
-            className="text-3xl font-extrabold sm:text-5xl"
-            animate={{ x: [50, 150, 50], opacity: 1, scale: 1 }}
-            transition={{
-              duration: 5,
-              delay: 0.3,
-              ease: [0.5, 0.71, 1, 1.5],
-            }}
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileHover={{ scale: 1.2 }}
+            className="text-4xl md:text-6xl font-extrabold mb-6"
+            animate={{ y: [40, 0], opacity: [0, 1] }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 40 }}
           >
-            Animation made easy with Framer Motion
-            <strong className="font-extrabold text-red-700 sm:block">
-              React and FAST API.
-            </strong>
+            Supercharge your workflow with
+            <span className="block text-purple-700 mt-2">
+              React & FastAPI Kanban
+            </span>
           </motion.h1>
 
           {profile && (
-            <h1 className="text-xl my-4 font-extrabold sm:text-2xl">
-              Welcome to Kanban Board,
-              <strong className="font-extrabold text-blue-700 sm:block">
-                {profile.username}
-              </strong>
-            </h1>
+            <motion.h2
+              className="text-2xl font-semibold text-blue-700 mb-4"
+              animate={{ opacity: [0, 1], x: [-30, 0] }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              initial={{ opacity: 0, x: -30 }}
+            >
+              Welcome back, {profile.username}!
+            </motion.h2>
           )}
 
-          <p className="my-4 sm:text-xl sm:leading-relaxed">
-            A simple Jira clone - create tasks and arrange them through drag and
-            drop
+          <p className="text-lg md:text-xl text-gray-700 mb-8">
+            Organize your tasks visually, collaborate with your team, and boost productivity. Drag, drop, and manage your projects with ease.
           </p>
-
-          <AwesomeSlider>
+        </div>
+        <div className="flex-1 max-w-lg w-full shadow-2xl rounded-xl overflow-hidden">
+          <AwesomeSlider bullets={false} organicArrows={true}>
             <div>
               <img
-                src="https://images.unsplash.com/photo-1664575262619-b28fef7a40a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2932&q=80"
-                alt=""
+                src="https://images.unsplash.com/photo-1664575262619-b28fef7a40a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Kanban Board Example 1"
+                className="object-cover w-full h-72"
               />
             </div>
             <div>
               <img
-                src="https://images.unsplash.com/photo-1664575197229-3bbebc281874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80"
-                alt=""
+                src="https://images.unsplash.com/photo-1664575197229-3bbebc281874?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Kanban Board Example 2"
+                className="object-cover w-full h-72"
               />
             </div>
             <div>
               <img
-                src="https://plus.unsplash.com/premium_photo-1664461662789-b72903263bad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80"
-                alt=""
+                src="https://plus.unsplash.com/premium_photo-1664461662789-b72903263bad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Kanban Board Example 3"
+                className="object-cover w-full h-72"
               />
             </div>
           </AwesomeSlider>
