@@ -11,7 +11,7 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
 
@@ -33,92 +33,86 @@ const Register = () => {
   
 
   return (
-    <form onSubmit={handleSubmit((data) => dispatch(registerFunc(data)))} className="md:w-1/2 sm:w-3/4 mx-auto my-3">
-      <p className="text-center text-2xl my-3 text-red-700">REGISTER</p>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
-          type="text"
-          placeholder="Email"
-          {...register('email', { required: true })}
-        />
-        {errors.email && <p className="text-red-500">Email is required.</p>}
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+        <h2 className="text-3xl font-extrabold text-center text-purple-700 mb-6">Create Account</h2>
+        <form onSubmit={handleSubmit((data) => dispatch(registerFunc(data)))} className="space-y-5">
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-1" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              {...register('email', { required: true })}
+            />
+            {errors.email && <p className="text-xs text-red-500 mt-1">Email is required.</p>}
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-1" htmlFor="username">
+              Username
+            </label>
+            <input
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+              id="username"
+              type="text"
+              placeholder="Username"
+              {...register('username', { required: true })}
+            />
+            {errors.username && <p className="text-xs text-red-500 mt-1">Username is required.</p>}
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-1" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+              id="password"
+              type="password"
+              placeholder="Enter Password"
+              {...register('password', { required: true })}
+            />
+            {errors.password && <p className="text-xs text-red-500 mt-1">Password is required.</p>}
+          </div>
+          <div className="flex space-x-3">
+            <div className="w-1/2">
+              <label className="block text-gray-700 text-sm font-semibold mb-1" htmlFor="firstName">
+                First Name
+              </label>
+              <input
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+                id="firstName"
+                type="text"
+                placeholder="First Name"
+                {...register('firstName', { required: true })}
+              />
+              {errors.firstName && <p className="text-xs text-red-500 mt-1">First Name is required.</p>}
+            </div>
+            <div className="w-1/2">
+              <label className="block text-gray-700 text-sm font-semibold mb-1" htmlFor="lastName">
+                Last Name
+              </label>
+              <input
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+                id="lastName"
+                type="text"
+                placeholder="Last Name"
+                {...register('lastName', { required: true })}
+              />
+              {errors.lastName && <p className="text-xs text-red-500 mt-1">Last Name is required.</p>}
+            </div>
+          </div>
+          <button
+            className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg transition duration-200"
+            type="submit"
+          >
+            Sign Up
+          </button>
+        </form>
       </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="username"
-        >
-          Username
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="username"
-          type="text"
-          placeholder="Username"
-          {...register('username', { required: true })}
-        />
-        {errors.username && <p className="text-red-500">Username is required.</p>}
-      </div>
-      
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="password"
-        >
-          Password
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          type="password"
-          placeholder="Enter Password"
-          {...register('password', { required: true })}
-        />
-        {errors.password && <p className="text-red-500">Password is required.</p>}
-      </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="firstName"
-        >
-          First Name
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="firstName"
-          type="text"
-          placeholder="First Name"
-          {...register('firstName', { required: true })}
-        />
-        {errors.firstName && <p className="text-red-500">First Name is required.</p>}
-      </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="lastName"
-        >
-          Last Name
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="lastName"
-          type="text"
-          placeholder="Last Name"
-          {...register('lastName', { required: true })}
-        />
-        {errors.lastName && <p className="text-red-500">Last Name is required.</p>}
-      </div>
-      <input className="shadow cursor-pointer bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-        type="submit" value="Sign Up" />
-    </form>
+    </div>
   );
 };
 

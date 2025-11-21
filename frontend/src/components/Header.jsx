@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -43,85 +43,79 @@ const Header = () => {
   };
 
   return (
-    <header className="relative z-10">
-      <nav aria-label="Top">
-        {/* Top navigation */}
-        <div className="bg-gray-900">
-          <div className="max-w-7xl mx-auto h-10 px-4 flex items-center justify-between sm:px-6 lg:px-8">
-            {user ? (
-              <div className="flex items-center space-x-6">
-                <button
-                  className="shadow bg-red-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                  type="button"
-                  onClick={() => onLogout()}
-                >
-                  Log Out
-                </button>
+    <header className="bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {user ? (
+            <div className="flex items-center space-x-8">
+              <Link
+                to="/"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                Home
+              </Link>
+              <Link
+                to="task"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                Add Task
+              </Link>
+              <Link
+                to="project"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                Add Project
+              </Link>
+              <Link
+                to="projects"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                All Projects
+              </Link>
+              <Link
+                to="scheduler"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                Scheduler
+              </Link>
+              <Link
+                to="/kanban"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                Kanban
+              </Link>
+              {profile && profile.role === "admin" && (
                 <Link
-                  to="task"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Add Task
-                </Link>
-                <Link
-                  to="project"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Add Project
-                </Link>
-                <Link
-                  to="projects"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  All Projects
-                </Link>
-                <Link
-                  to="scheduler"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Scheduler
-                </Link>
-                <Link
-                  to="/kanban"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Kanban
-                </Link>
-                <Link
-                  to="/"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Home
-                </Link>
-                {profile && profile.role === "admin" &&(
-                  <Link
                   to="/admin/tasks"
-                  className="text-sm font-medium text-white hover:text-gray-100"
+                  className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
                 >
                   Admin
                 </Link>
-                )
-              }
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center space-x-6">
-                  <Link
-                    to="login"
-                    className="text-sm font-medium text-white hover:text-gray-100"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="register"
-                    className="text-sm font-medium text-white hover:text-gray-100"
-                  >
-                    Create an Account
-                  </Link>
-                </div>
-              </>
-            )}
-          </div>
+              )}
+              <button
+                className="ml-auto bg-white text-purple-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-purple-600 font-semibold py-2 px-6 rounded-full transition-all duration-200"
+                type="button"
+                onClick={() => onLogout()}
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-8 ml-auto">
+              <Link
+                to="login"
+                className="text-white hover:text-gray-200 transition-colors duration-200 font-medium"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="register"
+                className="bg-white text-purple-600 hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-200"
+              >
+                Create an Account
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </header>

@@ -83,67 +83,57 @@ const Scheduler = () => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 py-10"
-    >
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-          <h1 className="text-4xl font-bold text-indigo-700 mb-4 md:mb-0">📅 Scheduler</h1>
-          <div className="flex items-center gap-4">
-            <button
-              className="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded transition"
-              onClick={goToPreviousMonth}
-            >
-              ← Prev
-            </button>
-            <span className="text-xl font-semibold text-indigo-900">
-              {dayjs(startDate).format("MMMM YYYY")}
-            </span>
-            <button
-              className="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded transition"
-              onClick={goToNextMonth}
-            >
-              Next →
-            </button>
-          </div>
+      animate={{ opacity: 1 }}   
+      className="bg-gray-50">
+      <div className="mx-auto max-w-screen-xl px-4 py-16 lg:flex lg:items-center">
+        <div className="mx-auto max-w-xl text-center">
+          <h1 className="text-3xl font-extrabold sm:text-5xl">Scheduler</h1>
         </div>
-        <div className="grid grid-cols-7 gap-4">
-          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-            <div key={d} className="text-center font-bold text-indigo-600">{d}</div>
-          ))}
-          {/* Padding for first day of month */}
-          {(() => {
-            const firstDay = dayjs(startDate).day();
-            return Array.from({ length: firstDay }).map((_, i) => (
-              <div key={`pad-${i}`} />
-            ));
-          })()}
-          {monthDays.map((item, idx) => (
+      </div>
+      <div className="flex justify-around items-center bg-blue-700 text-white w-full p-3">
+        <button
+          className="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+          onClick={() => goToPreviousMonth()}
+        >
+          Previous Month
+        </button>
+        <p className="font-bold text-2xl text-red-400">
+          {dayjs(startDate).format("MMMM")} - {dayjs(startDate).year()}
+        </p>
+        <button
+          className="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+          onClick={() => goToNextMonth()}
+        >
+          Next Month
+        </button>
+      </div>
+      <div className="grid grid-cols-7 px-2 gap-2">
+        {monthDays.map((item, index) => {
+          return (
             <div
-              key={idx}
-              className="bg-indigo-50 border border-indigo-200 rounded-lg p-2 min-h-[100px] flex flex-col"
+              key={index}
+              className="my-2 bg-blue-300 text-gray-700 text-center shadow-inner"
             >
-              <div className="text-xs font-semibold text-indigo-700 mb-2">
-                {dayjs(item.date).format("D")}
-              </div>
-              <div className="flex-1 space-y-1 overflow-y-auto">
+              <p className="bg-red-900 text-gray-200 text-bold text-xl p-3">{dayjs(item.date).format("MMMM D, YYYY")}</p>
+              <div className="p-2">
                 {item.tasks.length ? (
-                  item.tasks.map((task, tIdx) => (
-                    <div
-                      key={tIdx}
-                      className="bg-indigo-200 text-indigo-900 rounded px-2 py-1 text-xs font-medium shadow"
-                      title={task.title}
-                    >
-                      {task.title}
-                    </div>
-                  ))
+                  item.tasks.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="bg-gray-100 shadow-lg rounded-md my-2"
+                      >
+                        <p>{item.title}</p>
+                      </div>
+                    );
+                  })
                 ) : (
-                  <div className="text-gray-400 text-xs italic">No tasks</div>
+                  <p>No tasks</p>
                 )}
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </motion.div>
   );
