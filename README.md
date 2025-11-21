@@ -8,6 +8,8 @@
 
 The project back-end is created using Fast API in Python and React is used for the front-end. Tailwind CSS classes are used to style the UI components. It uses "react-form-hooks" for validating forms and Redux for state management. For the database "Postgres" has been used.
 
+While most of my React projects use Vite, this one still uses create-react-app for bootstrapping React project. I might want to change that in future though.
+
 ## Introduction
 
 It is a simple Kanban board application where you have four status 'To Do', 'In Progress', 'In Review' and 'Done'. You can create a generic task item and then through Kanban drag and drop dashboard, you can move items and save the updated status.
@@ -24,17 +26,29 @@ It now supports project CRUD operations. A task can be a part of a project. A sl
 
 28/8/23 : Project module added with CRUD operations, a task might be associated with a given project. Error handling has been improved.
 
+21/11/25 : Major UI upgrade
+
 ## Screenshots
 
 The style might be a subject to change in the future for this project. But, as of now this is how few pages look like
 
 Add Task form.
 
-![alt text](./screenshots/add_task.PNG)
+![alt text](./screenshots/task.png)
 
 Kanban board displaying all the tasks which is the core feature of this application.
 
-![alt text](./screenshots/kanban.PNG)
+![alt text](./screenshots/kanban.png)
+
+Form to add a new project
+
+![alt text](./screenshots/project.png)
+
+Calendar scheduler to get all the tasks 
+
+![alt text](./screenshots/scheduler.png)
+
+
 
 A working demo of the application in form of video can be found here https://www.youtube.com/watch?v=oJZs_70UR2E
 

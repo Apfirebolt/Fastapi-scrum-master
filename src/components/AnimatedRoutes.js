@@ -1,7 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import SmoothScroll from "../pages/ScrollExample";
 import HomeScreen from "../pages/Home";
 import LoginScreen from "../pages/Login";
 import RegisterScreen from "../pages/Register";
@@ -23,7 +22,6 @@ const AnimatedRoutes = () => {
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<HomeScreen />} exact />
-        <Route path="/scroll" element={<SmoothScroll />} exact />
         <Route path="/scheduler" element={<SchedulerScreen />} exact />
         <Route path="/login" element={<LoginScreen />} exact />
         <Route path="/register" element={<RegisterScreen />} exact />
