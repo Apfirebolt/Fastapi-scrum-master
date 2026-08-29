@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Optional, List
 from pydantic import BaseModel, constr, EmailStr
 
@@ -35,7 +35,7 @@ class ProjectList(BaseModel):
     description: str
     owner_id: int
     owner: UserSchema
-    createdDate: date
+    createdDate: datetime
 
     class Config:
         from_attributes = True

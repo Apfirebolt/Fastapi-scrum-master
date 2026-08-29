@@ -1,5 +1,5 @@
 import email
-from datetime import date
+from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel, constr, EmailStr
 
@@ -28,7 +28,7 @@ class TaskBase(BaseModel):
     status: str
     project_id: int
     project: Optional[ProjectSchema]
-    dueDate: date
+    dueDate: datetime
 
     class Config:
         from_attributes = True
@@ -39,7 +39,7 @@ class TaskUpdate(BaseModel):
     description: Optional[str]
     status: Optional[str]
     project_id: Optional[int]
-    dueDate: Optional[date]
+    dueDate: Optional[datetime]
 
     class Config:
         from_attributes = True
@@ -54,8 +54,8 @@ class TaskList(BaseModel):
     project_id: int
     project: ProjectSchema
     owner: UserSchema
-    createdDate: date
-    dueDate: date
+    createdDate: datetime
+    dueDate: datetime
 
     class Config:
         from_attributes = True
@@ -63,7 +63,7 @@ class TaskList(BaseModel):
 
 class TaskLogBase(BaseModel):
     id: int
-    createdDate: date
+    createdDate: datetime
     task_id: int
     task: Optional[TaskBase]
 

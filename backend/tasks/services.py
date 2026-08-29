@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from typing import List
 from . import models
+from backend.project.models import Project
 from datetime import datetime
 from sqlalchemy.orm import joinedload
 
@@ -16,8 +17,8 @@ async def create_new_task(request, database, current_user) -> models.Task:
 async def get_task_listing(database, current_user) -> List[models.Task]:
     tasks = (
         database.query(models.Task)
-        .join(models.Project, models.Task.project_id == models.Project.id)
-        .filter(models.Task.owner_id == current_user.id)
+        .join(Project, models.Task.project_id == Project.id)
+        .filter(models.Task.owner_id == current_user)
         .options(joinedload(models.Task.project))
         .all()
     )
@@ -26,8 +27,8 @@ async def get_task_listing(database, current_user) -> List[models.Task]:
 async def get_task_by_id(task_id, current_user, database):
     task = (
         database.query(models.Task)
-        .join(models.Project, models.Task.project_id == models.Project.id)
-        .filter(models.Task.id == task_id, models.Task.owner_id == current_user.id)
+        .join(Project, models.Task.project_id == Project.id)
+        .filter(models.Task.id == task_id, models.Task.owner_id == current_user)
         .options(joinedload(models.Task.project))
         .first()
     )
