@@ -24,6 +24,27 @@ async def all_users(database) -> List[models.User]:
     return users
 
 
+async def all_users_sql(database):
+
+    result = database.execute(
+        'SELECT id, email FROM public.user ORDER BY id ASC'
+    )
+
+    try:
+        records = result.fetchall() 
+    except AttributeError:
+        records = result
+
+    users_data = []
+    for row in records:
+        users_data.append({
+            "id": row[0],
+            "email": row[1]
+        })
+    
+    return users_data
+
+
 async def get_user_by_id(user_id, database) -> Optional[models.User]:
     user_info = database.query(models.User).get(user_id)
 

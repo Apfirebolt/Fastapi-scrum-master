@@ -9,7 +9,7 @@ class UserSchema(BaseModel):
     email: EmailStr
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProjectSchema(BaseModel):
@@ -17,7 +17,7 @@ class ProjectSchema(BaseModel):
     title: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 
@@ -31,7 +31,7 @@ class TaskBase(BaseModel):
     dueDate: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class TaskUpdate(BaseModel):
@@ -42,7 +42,7 @@ class TaskUpdate(BaseModel):
     dueDate: Optional[date]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class TaskList(BaseModel):
@@ -58,7 +58,7 @@ class TaskList(BaseModel):
     dueDate: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class TaskLogBase(BaseModel):
@@ -68,4 +68,4 @@ class TaskLogBase(BaseModel):
     task: Optional[TaskBase]
 
     class Config:
-        orm_mode = True
+        from_attributes = True

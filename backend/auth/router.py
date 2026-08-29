@@ -35,6 +35,11 @@ async def get_all_users(database: Session = Depends(db.get_db)):
     return await services.all_users(database)
 
 
+@router.get('/sql')
+async def get_all_users_sql(database: Session = Depends(db.get_db)):
+    return await services.all_users_sql(database)
+
+
 @router.post('/login')
 def login(request: schema.Login,
           database: Session = Depends(db.get_db)):    

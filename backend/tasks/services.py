@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from typing import List
 from . import models
 from datetime import datetime
+from sqlalchemy.orm import joinedload
 
 
 async def create_new_task(request, database, current_user) -> models.Task:
@@ -12,21 +13,30 @@ async def create_new_task(request, database, current_user) -> models.Task:
     database.refresh(new_task)
     return new_task
 
-
 async def get_task_listing(database, current_user) -> List[models.Task]:
-    tasks = database.query(models.Task).filter(models.Task.owner_id == current_user).all()
+    tasks = (
+        database.query(models.Task)
+        .join(models.Project, models.Task.project_id == models.Project.id)
+        .filter(models.Task.owner_id == current_user.id)
+        .options(joinedload(models.Task.project))
+        .all()
+    )
     return tasks
 
-
 async def get_task_by_id(task_id, current_user, database):
-    task = database.query(models.Task).filter_by(id=task_id, owner_id=current_user).first()
+    task = (
+        database.query(models.Task)
+        .join(models.Project, models.Task.project_id == models.Project.id)
+        .filter(models.Task.id == task_id, models.Task.owner_id == current_user.id)
+        .options(joinedload(models.Task.project))
+        .first()
+    )
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="task Not Found !"
         )
     return task
-
 
 async def delete_task_by_id(task_id, database):
     database.query(models.Task).filter(
