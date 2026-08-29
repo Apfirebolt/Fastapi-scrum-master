@@ -8,7 +8,7 @@ class UserSchema(BaseModel):
     email: EmailStr
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProjectBase(BaseModel):
@@ -17,7 +17,7 @@ class ProjectBase(BaseModel):
     description: str
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProjectUpdate(BaseModel):
@@ -26,7 +26,7 @@ class ProjectUpdate(BaseModel):
     status: Optional[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProjectList(BaseModel):
@@ -38,4 +38,4 @@ class ProjectList(BaseModel):
     createdDate: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
