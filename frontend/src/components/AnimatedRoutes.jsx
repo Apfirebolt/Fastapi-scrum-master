@@ -13,7 +13,7 @@ import TaskDetailScreen from "../pages/TaskDetail";
 import ProjectDetail from "../pages/ProjectDetail";
 import TasksAdminPage from "../pages/admin/AllTasks";
 import UsersAdminPage from "../pages/admin/AllUsers";
-import PrivateRoute from "../components/PrivateRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const AnimatedRoutes = () => {
   const location = useLocation();

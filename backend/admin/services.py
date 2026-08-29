@@ -1,91 +1,98 @@
+from typing import List, Dict
 from fastapi import HTTPException, status
-from typing import List
+from sqlalchemy import select, delete
+from sqlalchemy.orm import Session
 
 from backend.auth.models import User
 from backend.tasks.models import Task
-from backend.tasks import services as taskServices
-from backend.auth import services as userServices
-from backend.auth.schema import DisplayAccount
+from backend.auth import schema as auth_schema
+from backend.tasks import schema as task_schema
 
 
-async def get_user_by_id(user_id, database):
-    user = database.query(User).filter_by(id=user_id).first()
+# ----------------------------------------------------
+# User Services
+# ----------------------------------------------------
+
+def get_user_by_id(user_id: int, database: Session) -> User:
+    user = database.get(User, user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User Not Found !"
+            detail=f"User with ID {user_id} not found."
         )
     return user
 
 
-async def delete_user_by_id(user_id, database):
-    database.query(User).filter(
-        User.id == user_id).delete()
+def delete_user_by_id(user_id: int, database: Session) -> None:
+    user = get_user_by_id(user_id, database)
+    database.delete(user)
     database.commit()
 
 
-async def update_user_by_id(request, user_id, database):
-    user = database.query(User).filter_by(id=user_id).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User Not Found !"
-        )
-    user.firstName = request.firstName if request.firstName else user.firstName
-    user.lastName = request.lastName if request.lastName else user.lastName
+def update_user_by_id(
+    request: auth_schema.UserUpdate, 
+    user_id: int, 
+    database: Session
+) -> User:
+    user = get_user_by_id(user_id, database)
+
+    update_data = request.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(user, field, value)
+
     database.commit()
     database.refresh(user)
     return user
 
 
-async def all_users(database) -> List[DisplayAccount]:
-    users = database.query(User).all()
-    return users
-
-async def all_tasks(database) -> List[Task]:
-    tasks = database.query(Task).all()
-    return tasks
-
-async def delete_all_tasks(database):
-    database.query(Task).delete()
-    database.commit()
-    return {
-        'message': 'All tasks deleted'
-    }
+def all_users(database: Session) -> List[User]:
+    stmt = select(User).order_by(User.id.asc())
+    return list(database.scalars(stmt).all())
 
 
-async def get_task_by_id(task_id, database):
-    task = database.query(User).filter_by(id=task_id).first()
+# ----------------------------------------------------
+# Task Services
+# ----------------------------------------------------
+
+def all_tasks(database: Session) -> List[Task]:
+    stmt = select(Task).order_by(Task.id.desc())
+    return list(database.scalars(stmt).all())
+
+
+def get_task_by_id(task_id: int, database: Session) -> Task:
+    task = database.get(Task, task_id)
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Task Not Found !"
+            detail=f"Task with ID {task_id} not found."
         )
     return task
 
 
-async def delete_task_by_id(task_id, database):
-    database.query(Task).filter(
-        Task.id == task_id).delete()
+def delete_task_by_id(task_id: int, database: Session) -> None:
+    task = get_task_by_id(task_id, database)
+    database.delete(task)
     database.commit()
 
 
-async def update_task_by_id(request, task_id, database):
-    task = database.query(Task).filter_by(id=task_id).first()
-    if not task:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Task Not Found !"
-        )
-    task.title = request.title if request.title else task.title
-    task.description = request.description if request.description else task.description
-    task.status = request.status if request.status else task.status
+def delete_all_tasks(database: Session) -> Dict[str, str]:
+    stmt = delete(Task)
+    database.execute(stmt)
+    database.commit()
+    return {"message": "All tasks successfully deleted"}
+
+
+def update_task_by_id(
+    request: task_schema.TaskUpdate, 
+    task_id: int, 
+    database: Session
+) -> Task:
+    task = get_task_by_id(task_id, database)
+
+    update_data = request.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(task, field, value)
+
     database.commit()
     database.refresh(task)
     return task
-
-
-
-
-
-

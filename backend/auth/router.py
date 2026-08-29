@@ -1,72 +1,78 @@
-from fastapi import APIRouter, Depends, status, Response, HTTPException, UploadFile
+from typing import List, Dict, Any
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
-from typing import List
-from backend import db
-from . import schema
-from . import services
-from . import validator
 
-from . jwt import create_access_token, get_current_user
+from backend.db import get_db
+from . import schema, services
+from .jwt import create_access_token, get_current_user
+from .models import User
 
-from . import hashing
-from . models import User
-
-router = APIRouter(tags=['Auth'], prefix='/auth')
+router = APIRouter(
+    prefix="/auth",
+    tags=["Auth"]
+)
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
-async def create_user_registration(request: schema.User,
-                                   database: Session = Depends(db.get_db)):
-
-    user = await validator.verify_email_exist(request.email, database)
-
-    if user:
-        raise HTTPException(
-            status_code=400,
-            detail="This user with this email already exists in the system."
-        )
-
-    new_user = await services.new_user_register(request, database)
-    return new_user
+@router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=schema.UserResponse,
+    summary="Register a new user"
+)
+def create_user_registration(
+    request: schema.UserRegister,
+    database: Session = Depends(get_db)
+) -> schema.UserResponse:
+    return services.new_user_register(request, database)
 
 
-@router.get('/', response_model=List[schema.DisplayAccount])
-async def get_all_users(database: Session = Depends(db.get_db)):
-    return await services.all_users(database)
-
-
-@router.get('/sql')
-async def get_all_users_sql(database: Session = Depends(db.get_db)):
-    return await services.all_users_sql(database)
-
-
-@router.post('/login')
-def login(request: schema.Login,
-          database: Session = Depends(db.get_db)):    
-    user = database.query(User).filter(User.email == request.email).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-
-    if not hashing.verify_password(request.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Password")
-
-    # Generate a JWT Token
+@router.post(
+    "/login",
+    status_code=status.HTTP_200_OK,
+    response_model=schema.Token,
+    summary="Authenticate user and return JWT"
+)
+def login(
+    request: schema.Login,
+    database: Session = Depends(get_db)
+) -> schema.Token:
+    user = services.authenticate_user(request, database)
     access_token = create_access_token(data={"sub": user.email, "id": user.id})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return schema.Token(access_token=access_token, token_type="bearer")
 
 
-@router.get('/profile', response_model=schema.DisplayAccount)
-async def get_profile(database: Session = Depends(db.get_db), current_user: schema.User = Depends(get_current_user)):
-    return await services.get_profile(database, current_user)
+@router.get(
+    "/profile",
+    status_code=status.HTTP_200_OK,
+    response_model=schema.UserResponse,
+    summary="Get current user profile"
+)
+def get_profile(
+    current_user: User = Depends(get_current_user)
+) -> schema.UserResponse:
+    return current_user
 
 
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=List[schema.UserResponse],
+    summary="List all users (Admin/Internal)"
+)
+def get_all_users(
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> List[schema.UserResponse]:
+    return services.all_users(database)
 
 
-
-
-
-
-
-
+@router.get(
+    "/sql",
+    status_code=status.HTTP_200_OK,
+    summary="Raw SQL user list check"
+)
+def get_all_users_sql(
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> List[Dict[str, Any]]:
+    return services.all_users_sql(database)

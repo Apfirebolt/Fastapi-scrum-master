@@ -1,46 +1,44 @@
-import email
-from typing import Optional, List
-from pydantic import BaseModel, EmailStr
+from typing import Optional
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
-class User(BaseModel):
-    username: str
+class UserRegister(BaseModel):
+    username: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
-    firstName: str
-    lastName: str
-    password: str
-
-    
-class DisplayAccount(BaseModel):
-    id: int
-    username: str
-    email: str
-    firstName: Optional[str]
-    lastName: Optional[str]
-   
-
-    class Config:
-        from_attributes = True
+    firstName: Optional[str] = Field(None, max_length=50)
+    lastName: Optional[str] = Field(None, max_length=50)
+    password: str = Field(..., min_length=6)
 
 
 class UserUpdate(BaseModel):
-    username: Optional[str]
-    email: Optional[EmailStr]
-    firstName: Optional[str]
-    lastName: Optional[str]
-    password: Optional[str]
-    
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
+    email: Optional[EmailStr] = None
+    firstName: Optional[str] = None
+    lastName: Optional[str] = None
+    password: Optional[str] = Field(None, min_length=6)
+
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: EmailStr
+    role: str
+    firstName: Optional[str] = None
+    lastName: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
 
 class Login(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
 class Token(BaseModel):
     access_token: str
-    token_type: str
+    token_type: str = "bearer"
 
 
 class TokenData(BaseModel):
     email: Optional[str] = None
-    id: Optional[int]
+    id: Optional[int] = None
