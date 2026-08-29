@@ -1,41 +1,38 @@
-from datetime import date, datetime
-from typing import Optional, List
-from pydantic import BaseModel, constr, EmailStr
+from datetime import datetime
+from typing import Optional
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserSchema(BaseModel):
+    id: int
     username: str
     email: EmailStr
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
-class ProjectBase(BaseModel):
-    id: Optional[int]
-    title: str
-    description: str
-    
-    class Config:
-        from_attributes = True
+class ProjectCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=100)
+    description: Optional[str] = Field(None, max_length=5000)
 
 
 class ProjectUpdate(BaseModel):
-    title: Optional[str]
-    description: Optional[str]
-    status: Optional[str]
-
-    class Config:
-        from_attributes = True
+    title: Optional[str] = Field(None, min_length=1, max_length=100)
+    description: Optional[str] = Field(None, max_length=5000)
 
 
-class ProjectList(BaseModel):
+class ProjectResponse(BaseModel):
     id: int
     title: str
-    description: str
+    description: Optional[str] = None
     owner_id: int
-    owner: UserSchema
-    createdDate: datetime
+    # Changed from 'datetime' to 'Optional[datetime] = None'
+    createdDate: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ProjectDetail(ProjectResponse):
+    owner: UserSchema
+
+    model_config = ConfigDict(from_attributes=True)

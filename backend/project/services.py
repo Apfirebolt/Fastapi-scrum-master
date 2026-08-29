@@ -1,48 +1,78 @@
+from typing import List, Optional
+from datetime import datetime, timezone
 from fastapi import HTTPException, status
-from typing import List
-from . import models
-from datetime import datetime
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from backend.auth.models import User
+from . import models, schema
 
 
-async def create_new_project(request, database, current_user) -> models.Project:
-    new_project = models.Project(title=request.title, description=request.description,
-                                    owner_id=current_user.id, createdDate=datetime.now())
+def create_new_project(
+    project_in: schema.ProjectCreate, 
+    database: Session, 
+    current_user: User
+) -> models.Project:
+    new_project = models.Project(
+        title=project_in.title,
+        description=project_in.description,
+        owner_id=current_user.id,
+        createdDate=datetime.now(timezone.utc)
+    )
     database.add(new_project)
     database.commit()
     database.refresh(new_project)
     return new_project
 
 
-async def get_project_listing(database, current_user) -> List[models.Project]:
-    projects = database.query(models.Project).filter(models.Project.owner_id == current_user).all()
-    return projects
+def get_project_listing(
+    database: Session, 
+    owner_id: int
+) -> List[models.Project]:
+    stmt = select(models.Project).where(models.Project.owner_id == owner_id)
+    return list(database.scalars(stmt).all())
 
 
-async def get_project_by_id(project_id, current_user, database):
-    project = database.query(models.Project).filter_by(id=project_id, owner_id=current_user).first()
+def get_project_by_id(
+    project_id: int, 
+    owner_id: int, 
+    database: Session
+) -> models.Project:
+    stmt = select(models.Project).where(
+        models.Project.id == project_id, 
+        models.Project.owner_id == owner_id
+    )
+    project = database.scalars(stmt).first()
     if not project:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="project Not Found !"
+            detail=f"Project with ID {project_id} not found."
         )
     return project
 
 
-async def delete_project_by_id(project_id, database):
-    database.query(models.Project).filter(
-        models.Project.id == project_id).delete()
+def delete_project_by_id(
+    project_id: int, 
+    owner_id: int, 
+    database: Session
+) -> None:
+    project = get_project_by_id(project_id, owner_id, database)
+    database.delete(project)
     database.commit()
 
 
-async def update_project_by_id(request, project_id, current_user, database):
-    project = database.query(models.Project).filter_by(id=project_id, owner_id=current_user).first()
-    if not project:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="project Not Found !"
-        )
-    project.title = request.title if request.title else project.title
-    project.description = request.description if request.description else project.description
+def update_project_by_id(
+    project_in: schema.ProjectUpdate, 
+    project_id: int, 
+    owner_id: int, 
+    database: Session
+) -> models.Project:
+    project = get_project_by_id(project_id, owner_id, database)
+    
+    update_data = project_in.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(project, field, value)
+
     database.commit()
     database.refresh(project)
     return project

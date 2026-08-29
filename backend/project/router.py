@@ -1,52 +1,85 @@
 from typing import List
-from fastapi import APIRouter, Depends, status, Response, Request
+from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.orm import Session
+
 from backend.auth.jwt import get_current_user
 from backend.auth.models import User
+from backend.db import get_db
 
-from backend import db
-
-from .import schema
-from .import services
-
+from . import schema, services
 
 router = APIRouter(
-    tags=["Project"],
-    prefix='/project'
+    prefix="/project",
+    tags=["Projects"]
 )
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED,
-             response_model=schema.ProjectBase)
-async def create_new_project(request: schema.ProjectBase, database: Session = Depends(db.get_db), 
-    current_user: User = Depends(get_current_user)):
-    user = database.query(User).filter(User.email == current_user.email).first()
-    result = await services.create_new_project(request, database, user)
-    return result
+@router.post(
+    "/", 
+    status_code=status.HTTP_201_CREATED,
+    response_model=schema.ProjectResponse,
+    summary="Create a new project"
+)
+def create_new_project(
+    request: schema.ProjectCreate, 
+    database: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_user)
+) -> schema.ProjectResponse:
+    return services.create_new_project(request, database, current_user)
 
 
-@router.get('/', status_code=status.HTTP_200_OK,
-            response_model=List[schema.ProjectList])
-async def project_list(database: Session = Depends(db.get_db),
-                                current_user: User = Depends(get_current_user)):
-    result = await services.get_project_listing(database, current_user.id)
-    return result
+@router.get(
+    "/", 
+    status_code=status.HTTP_200_OK,
+    response_model=List[schema.ProjectResponse],
+    summary="List all user projects"
+)
+def list_projects(
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> List[schema.ProjectResponse]:
+    return services.get_project_listing(database, current_user.id)
 
 
-@router.get('/{project_id}', status_code=status.HTTP_200_OK, response_model=schema.ProjectBase)
-async def get_project_by_id(project_id: int, database: Session = Depends(db.get_db),
-                                current_user: User = Depends(get_current_user)):                            
-    return await services.get_project_by_id(project_id, current_user.id, database)
+@router.get(
+    "/{project_id}", 
+    status_code=status.HTTP_200_OK, 
+    response_model=schema.ProjectDetail,
+    summary="Get project by ID"
+)
+def get_project_by_id(
+    project_id: int, 
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> schema.ProjectDetail:                            
+    return services.get_project_by_id(project_id, current_user.id, database)
 
 
-@router.delete('/{project_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
-async def delete_project_by_id(project_id: int,
-                                database: Session = Depends(db.get_db),
-                                current_user: User = Depends(get_current_user)):
-    return await services.delete_project_by_id(project_id, database)
+@router.delete(
+    "/{project_id}", 
+    status_code=status.HTTP_204_NO_CONTENT, 
+    response_class=Response,
+    summary="Delete a project"
+)
+def delete_project_by_id(
+    project_id: int,
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> Response:
+    services.delete_project_by_id(project_id, current_user.id, database)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.patch('/{project_id}', status_code=status.HTTP_200_OK, response_model=schema.ProjectBase)
-async def update_project_by_id(request: schema.ProjectUpdate, project_id: int, database: Session = Depends(db.get_db),
-                                current_user: User = Depends(get_current_user)):                            
-    return await services.update_project_by_id(request, project_id, current_user.id, database)
+@router.patch(
+    "/{project_id}", 
+    status_code=status.HTTP_200_OK, 
+    response_model=schema.ProjectResponse,
+    summary="Update project details"
+)
+def update_project_by_id(
+    request: schema.ProjectUpdate, 
+    project_id: int, 
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> schema.ProjectResponse:                            
+    return services.update_project_by_id(request, project_id, current_user.id, database)
