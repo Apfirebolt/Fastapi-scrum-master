@@ -14,20 +14,14 @@ class Project(Base):
     __tablename__ = "project"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    
-    # 1. Added explicit column name "createdDate" (or change to "created_date" if your DB uses snake_case)
-    # 2. Added default lambda with timezone.utc so Python sets it immediately upon creation
-    createdDate: Mapped[datetime] = mapped_column(
+    createdDate: Mapped[Optional[datetime]] = mapped_column(
         "createdDate",
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         server_default=func.now(),
-        nullable=False,
     )
-    
     title: Mapped[str] = mapped_column(String(100), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    
     owner_id: Mapped[int] = mapped_column(
         Integer, 
         ForeignKey("user.id", ondelete="CASCADE"), 
@@ -41,3 +35,32 @@ class Project(Base):
         back_populates="project", 
         cascade="all, delete-orphan"
     )
+    # One-to-many relationship with project images
+    images: Mapped[List["ProjectImage"]] = relationship(
+        "ProjectImage",
+        back_populates="project",
+        cascade="all, delete-orphan",
+        order_by="ProjectImage.id.asc()",
+    )
+
+
+class ProjectImage(Base):
+    __tablename__ = "project_image"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    image_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    image_public_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    createdDate: Mapped[Optional[datetime]] = mapped_column(
+        "createdDate",
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        server_default=func.now(),
+        nullable=True,
+    )
+    project_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("project.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+
+    project: Mapped["Project"] = relationship("Project", back_populates="images")

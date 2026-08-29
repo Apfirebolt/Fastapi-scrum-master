@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, File, Response, UploadFile, status
 from sqlalchemy.orm import Session
 
 from backend.auth.jwt import get_current_user
@@ -83,3 +83,38 @@ def update_project_by_id(
     current_user: User = Depends(get_current_user)
 ) -> schema.ProjectResponse:                            
     return services.update_project_by_id(request, project_id, current_user.id, database)
+
+
+# ----------------------------------------------------
+# Project Image Attachment Endpoints
+# ----------------------------------------------------
+
+@router.post(
+    "/{project_id}/images",
+    status_code=status.HTTP_201_CREATED,
+    response_model=List[schema.ProjectImageResponse],
+    summary="Upload image attachments for a project",
+)
+def upload_project_images(
+    project_id: int,
+    files: List[UploadFile] = File(...),
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> List[schema.ProjectImageResponse]:
+    return services.upload_project_images(project_id, files, current_user.id, database)
+
+
+@router.delete(
+    "/{project_id}/images/{image_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response,
+    summary="Delete a project image attachment",
+)
+def delete_project_image(
+    project_id: int,
+    image_id: int,
+    database: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> Response:
+    services.delete_project_image(project_id, image_id, current_user.id, database)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

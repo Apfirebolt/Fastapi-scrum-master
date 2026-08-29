@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
@@ -7,6 +7,15 @@ class UserSchema(BaseModel):
     id: int
     username: str
     email: EmailStr
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ProjectImageResponse(BaseModel):
+    id: int
+    image_url: str
+    image_public_id: str
+    createdDate: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -26,13 +35,13 @@ class ProjectResponse(BaseModel):
     title: str
     description: Optional[str] = None
     owner_id: int
-    # Changed from 'datetime' to 'Optional[datetime] = None'
     createdDate: Optional[datetime] = None
+    images: List[ProjectImageResponse] = []
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class ProjectDetail(ProjectResponse):
-    owner: UserSchema
+    owner: Optional[UserSchema] = None
 
     model_config = ConfigDict(from_attributes=True)
